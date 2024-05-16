@@ -8,6 +8,7 @@ const handlebars = require('express-handlebars')
 
 const flash = require('connect-flash')
 const session = require('express-session')
+const passport = require('./config/passport.js')
 
 const routes = require('./routes')
 
@@ -32,6 +33,10 @@ app.use((req, res, next) => {
   res.locals.error_messages = req.flash('error_messages')
   next()
 })
+
+// middleware: 設定 passport
+app.use(passport.initialize()) // 令 passport 初始化
+app.use(passport.session()) // 啟動 passport 的 session 功能; 必須放在原本的session之後
 
 app.use(routes)
 
