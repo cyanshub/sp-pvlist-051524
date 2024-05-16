@@ -7,6 +7,7 @@ const fieldController = require('../controllers/field-controller.js')
 const userController = require('../controllers/user-controller.js')
 
 // 載入 middleware
+const { generalErrorHandler } = require('../middleware/error-handler.js')
 router.use('/admin', admin)
 
 // 設計路由
@@ -14,6 +15,7 @@ router.get('/signup', userController.signUpPage)
 router.post('/signup', userController.signUp)
 
 router.get('/fields', fieldController.getFields)
-router.use('/', (req, res) => res.redirect('/fields'))
+router.get('/', (req, res) => res.redirect('/fields'))
+router.use('/', generalErrorHandler)
 
 module.exports = router

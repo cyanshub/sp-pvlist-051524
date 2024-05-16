@@ -1,5 +1,14 @@
+// 載入環境變數
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const express = require('express')
 const handlebars = require('express-handlebars')
+
+const flash = require('connect-flash')
+const session = require('express-session')
+
 const routes = require('./routes')
 
 const app = express()
@@ -12,6 +21,18 @@ app.set('view engine', 'hbs')
 // 設計 middleware
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true })) // 啟用 req.body
+
+// middleware: 啟用 Flash Message
+app.use(flash())
+app.use(session({ secret: process.env.SESSION_SECRET, resave: false, saveUninitialized: false }))
+
+// middleware: 設定所有路由都會經過的 middleware
+app.use((req, res, next) => {
+  res.locals.success_messages = req.flash('success_messages')
+  res.locals.error_messages = req.flash('error_mesages')
+  next()
+})
+
 app.use(routes)
 
 app.listen(port, () => {
