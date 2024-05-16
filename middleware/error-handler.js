@@ -5,7 +5,7 @@ module.exports = {
       // 如果是 error 物件, 則必須攜帶 name 與 message 屬性
       req.flash('error_messages', `${err.name}:${err.message}`)
     } else {
-      req.flash('error_message', `${err}`)
+      req.flash('error_messages', `${err}`)
     }
     res.redirect('back')
     next(err)

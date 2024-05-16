@@ -6,9 +6,14 @@ const userController = {
     return res.render('signup')
   },
   signUp: (req, res, next) => {
-    const { name, email, password } = req.body
+    const { name, email, password, passwordCheck } = req.body
     const Salt = 10
-    return bcrypt.hash(password, Salt)
+    if (password !== passwordCheck) throw new Error('請再次確認密碼是否輸入正確')
+    return User.findOne({ where: { email } })
+      .then(user => {
+        if (user) throw new Error('使用者信箱已經存在')
+        return bcrypt.hash(password, Salt)
+      })
       .then(hash => {
         User.create({
           name,
@@ -17,7 +22,10 @@ const userController = {
           is_admin: false
         })
       })
-      .then(() => res.redirect('/signin'))
+      .then(() => {
+        req.flash('success_messages', '成功註冊帳號!')
+        return res.redirect('/signin')
+      })
       .catch(err => next(err))
   }
 }
