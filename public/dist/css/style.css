@@ -9,7 +9,8 @@ body {
   background-size: cover;
 }
 
-.form-signup {
+.form-signup,
+.form-signin {
   width: 40%;
   min-width: 320px;
   max-width: 475px;
@@ -21,7 +22,8 @@ body {
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
 }
 @media (max-width: 40em) {
-  .form-signup {
+  .form-signup,
+  .form-signin {
     width: 95%;
     position: relative;
     margin: 2.5% auto 0 auto;
@@ -29,12 +31,14 @@ body {
     transform: translate(0%, 0%);
   }
 }
-.form-signup form {
+.form-signup form,
+.form-signin form {
   display: block;
   width: 100%;
   padding: 2em;
 }
-.form-signup h2 {
+.form-signup h2,
+.form-signin h2 {
   width: 100%;
   color: #5fdde5;
   font-family: "open sans condensed";
@@ -51,7 +55,8 @@ body {
   font-weight: 200;
   text-align: center;
 }
-.form-signup input {
+.form-signup input,
+.form-signin input {
   display: block;
   margin: auto auto;
   width: 100%;
@@ -61,10 +66,12 @@ body {
   border-bottom: 1px solid #eaeaea;
   color: #757575;
 }
-.form-signup input:focus {
+.form-signup input:focus,
+.form-signin input:focus {
   outline: none;
 }
-.form-signup .btn {
+.form-signup .btn,
+.form-signin .btn {
   display: block;
   background: #1fb5bf;
   border: 1px solid #1ba0a9;
@@ -74,13 +81,41 @@ body {
   margin: 0 auto;
   box-shadow: inset 0px 1px 0px fadeout(white, 80%);
 }
-.form-signup .btn:hover {
+.form-signup .btn:hover,
+.form-signin .btn:hover {
   background: #23cad5;
 }
-.form-signup .btn:active {
+.form-signup .btn:active,
+.form-signin .btn:active {
   background: #1fb5bf;
   box-shadow: inset 0px 1px 1px fadeout(black, 90%);
 }
-.form-signup .btn:focus {
+.form-signup .btn:focus,
+.form-signin .btn:focus {
   outline: none;
+}
+.form-signup .sign,
+.form-signin .sign {
+  margin-top: 1.5em;
+  margin-bottom: 0em;
+  display: flex;
+  justify-content: end;
+}
+.form-signup .sign a,
+.form-signin .sign a {
+  color: #33d3de;
+  line-height: 0.9em;
+  text-decoration: none;
+  font-size: 0.9em;
+  position: relative;
+  right: 0;
+}
+.form-signup .sign a:hover,
+.form-signin .sign a:hover {
+  color: #1ba0a9;
+}
+.form-signup .sign a:active,
+.form-signin .sign a:active {
+  background: #1fb5bf;
+  box-shadow: inset 0px 1px 1px fadeout(black, 90%);
 }/*# sourceMappingURL=style.css.map */

@@ -18,7 +18,8 @@ $grey: #2a2a2a;
 $blue: #1fb5bf;
 
 
-.form-signup {
+.form-signup,
+.form-signin {
   width: 40%;
   min-width: 320px;
   max-width: 475px;
@@ -106,6 +107,33 @@ $blue: #1fb5bf;
 
     &:focus {
       outline: none;
+    }
+  }
+
+  .sign {
+    margin-top: 1.5em;
+    margin-bottom: 0em;
+    display: flex;
+    justify-content: end;
+
+    a {
+      color: lighten($blue, 10%);
+      line-height: .9em;
+      text-decoration: none;
+      font-size: .9em;
+
+      position: relative;
+      right: 0;
+
+
+      &:hover {
+        color: darken($blue, 5%);
+      }
+
+      &:active {
+        background: $blue;
+        box-shadow: inset 0px 1px 1px fadeout(black, 90%);
+      }
     }
   }
 }
