@@ -30,7 +30,7 @@ passport.serializeUser((user, cb) => cb(null, user.id))
 
 // 在 passport 設定反序列化
 passport.deserializeUser((id, cb) => {
-  return User.findByPk(id)
+  User.findByPk(id)
     .then(user => cb(null, user.toJSON()))
     .catch(err => cb(err))
 })

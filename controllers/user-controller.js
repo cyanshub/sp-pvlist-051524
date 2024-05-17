@@ -19,7 +19,7 @@ const userController = {
           name,
           email,
           password: hash,
-          is_admin: false
+          isAdmin: false
         })
       })
       .then(() => {

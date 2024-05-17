@@ -9,7 +9,9 @@ const userController = require('../controllers/user-controller.js')
 // 載入 middleware
 const { generalErrorHandler } = require('../middleware/error-handler.js')
 const passport = require('../config/passport.js')
-router.use('/admin', admin)
+const { authenticated, authenticatedAdmin } = require('../middleware/auth.js')
+
+router.use('/admin', authenticatedAdmin, admin)
 
 // 設計路由
 router.get('/signup', userController.signUpPage)
@@ -18,7 +20,7 @@ router.get('/signin', userController.signInPage)
 router.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signIn) // 直接使用passport提供的方法進行登入驗證
 router.get('/logout', userController.logOut)
 
-router.get('/fields', fieldController.getFields)
+router.get('/fields', authenticated, fieldController.getFields)
 router.get('/', (req, res) => res.redirect('/fields'))
 router.use('/', generalErrorHandler)
 
