@@ -3,7 +3,7 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('categories',
-      ['地面型系統', '廠房鐵皮屋頂', '建築水泥樓面屋頂', '畜禽舍屋頂', '校園屋頂', '其他屋頂']
+      ['地面型系統', '廠房鐵皮屋頂', '建築水泥樓面屋頂', '畜禽舍屋頂', '校園屋頂', '其他']
         .map(item => {
           return {
             name: item,
