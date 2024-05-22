@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-md-12">
+    <h2>{{field.name}}</h1>
+  </div>
+  <div class="col col-lg-6">
+    <img class="img-responsive center-block" src="{{field.cover}}"
+      style="width:auto; max-width: 390px; margin-bottom: 25px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+    <br>
+  </div>
+  <div class="col-12 col-lg-6">
+    <h5><strong>綠電憑證資訊</strong></h5>
+    <ul class="list-unstyled">
+      <li><strong>累積張數: </strong>{{formatNumber field.totalAmount}} 張</li>
+      <li><strong>交易張數: </strong>{{formatNumber field.transAmount}} 張</li>
+      <li><strong>剩餘張數: </strong>{{formatNumber field.remainAmount}} 張</li>
+    </ul>
+    <br>
+    <h5><strong>場域資訊</strong></h5>
+    <ul class="list-unstyled">
+      <li><strong>類別: </strong>{{field.Category.name}}</li>
+      <li><strong>地址: </strong> {{field.fullAddress}}</li>
+    </ul>
+  </div>
+  <hr>
+</div>
+<a class="btn btn-outline-secondary" href="javascript:history.back()">Back</a>

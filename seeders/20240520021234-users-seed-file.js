@@ -11,18 +11,21 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert('users', [{
+      name: 'root',
       email: 'root@example.com',
       password: await bcrypt.hash(process.env.USER_PASSWORD, salt),
       is_admin: true,
       created_at: new Date(),
       updated_at: new Date()
     }, {
+      name: 'user1',
       email: 'user1@example.com',
       password: await bcrypt.hash(process.env.USER_PASSWORD, salt),
       is_admin: false,
       created_at: new Date(),
       updated_at: new Date()
     }, {
+      name: 'user2',
       email: 'user2@example.com',
       password: await bcrypt.hash(process.env.USER_PASSWORD, salt),
       is_admin: false,

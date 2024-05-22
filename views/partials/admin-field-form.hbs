@@ -1,0 +1,51 @@
+{{!-- 輸入案場名稱 --}}
+<div class="form-row mb-3">
+  <label class="form-label" for="name">場域名稱</label>
+  <input class="form-control" type="text" name="name" id="name" placeholder="請輸入場域名稱" value="{{field.name}}"
+    required>
+</div>
+
+{{!-- 輸入案場分類 --}}
+<div class="form-row mb-3">
+  <label class="form-label" for="categoryId">案場類別</label>
+  <select class="form-control" id="categoryId" name="categoryId">
+    {{#each categories}}
+    <option value="{{this.id}}" {{#ifCond this.id ../field.categoryId }} selected {{/ifCond}}>
+      {{this.name}}
+    </option>
+    {{/each}}
+  </select>
+</div>
+
+{{!-- 輸入案場地點 --}}
+{{!-- 地區的資料從地址擷取 --}}
+<div class="form-row mb-3">
+  <label class="form-label" for="fullAddress">案場地址</label>
+  <input class="form-control" type="text" name="fullAddress" id="fullAddress" placeholder="請輸入場域地址 (例: 台北市大安區金山南路 2 段 55 號)"
+    value="{{field.fullAddress}}">
+</div>
+
+{{!-- 綠電憑證累積張數 --}}
+{{!-- 剩餘張數用計算取得 --}}
+<div class="form-row mb-3">
+  <label class="form-label" for="tel">累積張數</label>
+  <input class="form-control" type="number" name="totalAmount" id="totalAmount" placeholder="請輸入綠電憑證累積張數" value="{{field.totalAmount}}" min="0"  max="99999">
+</div>
+
+{{!-- 綠電憑證交易張數 --}}
+<div class="form-row mb-3">
+  <label class="form-label" for="tel">交易張數</label>
+  <input class="form-control" type="number" name="transAmount" id="transAmount" placeholder="請輸入綠電憑證交易張數" value="{{field.transAmount}}" min="0" max="99999">
+</div>
+
+
+{{!-- 預留上傳圖片的欄位 --}}
+{{!-- <div class="form-row mb-3">
+  <label for="cover" class="form-label">場域照片</label>
+  <input type="file" name="cover" id="cover" class="form-control form-control-file">
+</div> --}}
+
+<div class="d-flex justify-content-center">
+  <button type="submit" class="btn btn-primary mx-3">Submit</button>
+  <a href="javascript:history.back()" class="btn btn-outline-secondary">Back</a>
+</div>

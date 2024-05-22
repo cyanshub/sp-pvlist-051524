@@ -8,7 +8,7 @@
       <input class="form-control" type="text" placeholder="name" name="name" value="{{category.name}}">
     </div>
     <div class="col-auto">
-      <button class="btn btn-warning" type="submit">Update</button>
+      <button class="btn btn-outline-warning" type="submit">Update</button>
       <a class="btn btn-link link-secondary" href="/admin/categories">or Create New</a>
     </div>
   </form>
@@ -16,10 +16,10 @@
   {{!-- 負責新增分類 --}}
   <form class="row" action="/admin/categories" method="POST">
     <div class="col-auto">
-      <input class="form-control" type="text" placeholder="Category Name" name="name">
+      <input class="form-control" type="text" placeholder="請輸入類別名稱" name="name">
     </div>
     <div class="col-auto">
-      <button class="btn btn-success" type="submit">Create</button>
+      <button class="btn btn-outline-primary" type="submit">Create</button>
     </div>
   </form>
   {{/if}}
@@ -28,9 +28,9 @@
 <table class="table align-middle">
   <thead class="thead-dark">
     <tr class="table-dark">
-      <th scope="col">#</th>
-      <th scope="col">Category Name</th>
-      <th scope="col">#</th>
+      <th scope="col">序號</th>
+      <th scope="col">類別名稱</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
