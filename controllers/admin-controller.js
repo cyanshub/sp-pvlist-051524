@@ -3,6 +3,7 @@ const { Field, User, Category } = require('../models')
 
 // 載入所需的工具
 const { getOffset, getPagination } = require('../helpers/pagination-helper.js')
+const { localFileHandler } = require('../helpers/file-helpers.js')
 
 const adminController = {
   // 案場相關
@@ -41,6 +42,7 @@ const adminController = {
   },
   postField: (req, res, next) => {
     const { name, categoryId, fullAddress, totalAmount, transAmount } = req.body
+    const file = req.file // 根據之前修正的form content, 把檔案從req取出來
 
     // 檢驗必填欄位是否存在
     if (!name) throw new Error('案場名稱為必填欄位!')
@@ -49,15 +51,20 @@ const adminController = {
     const localFormat = fullAddress.trim().slice(0, 5) === '新竹市東區' ? fullAddress.trim().slice(4, 5) : fullAddress.trim().slice(5, 6)
     if (!['鄉', '鎮', '市', '區'].includes(localFormat)) throw new Error('地址開頭請提供縣市及鄉鎮市區!')
 
-    return Field.create({
-      name,
-      totalAmount: totalAmount || 0,
-      transAmount: transAmount || 0,
-      remainAmount: totalAmount - transAmount,
-      fullAddress,
-      local: fullAddress.trim().slice(0, 5) === '新竹市東區' ? fullAddress.slice(0, 5) : fullAddress.slice(0, 6),
-      categoryId
-    })
+    // 把取出的檔案 file 傳給 file-helper 處理
+    return localFileHandler(file)
+      .then(filePath => {
+        return Field.create({
+          name,
+          totalAmount: totalAmount || 0,
+          transAmount: transAmount || 0,
+          remainAmount: totalAmount - transAmount,
+          fullAddress,
+          local: fullAddress.trim().slice(0, 5) === '新竹市東區' ? fullAddress.slice(0, 5) : fullAddress.slice(0, 6),
+          categoryId,
+          cover: filePath || null
+        })
+      })
       .then(newField => {
         res.redirect('/admin')
         return { field: newField }
@@ -88,11 +95,15 @@ const adminController = {
   },
   putField: (req, res, next) => {
     const { name, categoryId, fullAddress, totalAmount, transAmount } = req.body
-
-    // 檢驗必填欄位是否存在
-    if (!name) throw new Error('案場名稱為必填欄位!')
-    return Field.findByPk(req.params.id)
-      .then(field => {
+    if (!name) throw new Error('案場名稱為必填欄位!') // 檢驗必填欄位是否存在
+    const file = req.file // 拿到 middleware: multer 上傳的圖片
+    // 使用 Promise.all 語法, 待所有非同步事件處理完才跳入下一個.then()
+    // Promise.all([非同步A, 非同步B]).then(([A結果, B結果]) => {...})
+    return Promise.all([
+      Field.findByPk(req.params.id),
+      localFileHandler(file)
+    ])
+      .then(([field, filePath]) => {
         if (!field) throw new Error('該案場不存在!')
         return field.update({
           name,
@@ -101,7 +112,8 @@ const adminController = {
           remainAmount: totalAmount - transAmount,
           fullAddress,
           local: fullAddress.trim().slice(0, 5) === '新竹市東區' ? fullAddress.slice(0, 5) : fullAddress.slice(0, 6),
-          categoryId
+          categoryId,
+          cover: filePath || field.cover
         })
       })
       .then(editField => {

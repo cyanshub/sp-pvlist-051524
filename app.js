@@ -5,6 +5,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 const express = require('express')
 const handlebars = require('express-handlebars')
+const path = require('path')
 
 const methodOverride = require('method-override')
 const flash = require('connect-flash')
@@ -24,6 +25,8 @@ app.set('view engine', 'hbs')
 
 // 設計 middleware
 app.use(express.static('public'))
+app.use('/upload', express.static(path.join(__dirname, 'upload')))
+
 app.use(express.urlencoded({ extended: true })) // 啟用 req.body
 app.use(methodOverride('_method')) // 遵循RESTful 精神撰寫路由
 
