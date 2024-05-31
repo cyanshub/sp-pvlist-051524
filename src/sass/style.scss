@@ -17,6 +17,16 @@ body {
 $grey: #2a2a2a;
 $blue: #1fb5bf;
 
+a {
+  color: $grey;
+  text-decoration: none;
+}
+
+.text-container {
+  white-space: nowrap; /* 防止文字換行 */
+  overflow: hidden; /* 隱藏超出容器的文字 */
+  text-overflow: ellipsis; /* 使用省略號表示超出的部分 */
+}
 
 .form-signup,
 .form-signin {

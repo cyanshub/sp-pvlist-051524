@@ -926,7 +926,7 @@ module.exports = {
       trans_amount: 0,
       full_address: '桃園市大園區國際路一段88號',
       local: '桃園市大園區',
-      cover: 'https://www.trec.org.tw/attachment/B0E33CDD-9AB9-4CAC-BD5A-ED7F761E1F70"',
+      cover: 'https://www.trec.org.tw/attachment/B0E33CDD-9AB9-4CAC-BD5A-ED7F761E1F70',
       created_at: new Date(),
       updated_at: new Date(),
       category_id: pvCategories.建築水泥樓面屋頂
