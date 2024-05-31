@@ -42,8 +42,8 @@ router.get('/fields/:id', authenticated, fieldController.getField)
 // router.get('/fields/:id/dashboard', authenticated, fieldController.getDashboard)
 
 // 設計路由: 留言功能相關
-// router.post('/comments', authenticated, commentController.postComment)
-// router.delete('/comments/:id', authenticated, commentController.deleteComment)
+router.post('/comments', authenticated, commentController.postComment)
+router.delete('/comments/:id', authenticated, commentController.deleteComment)
 
 // 設計路由: 錯誤相關
 router.get('/', (req, res) => res.redirect('/fields'))

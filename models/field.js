@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE'
       })
+      Field.hasMany(models.Comment, { foreignKey: 'fieldId' })
     }
   }
   Field.init({

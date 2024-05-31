@@ -1,5 +1,5 @@
 // 引入資料表 model
-const { Field, Category } = require('../models')
+const { Field, Category, Comment, User } = require('../models')
 
 // 載入所需的工具
 const { getOffset, getPagination } = require('../helpers/pagination-helper.js')
@@ -45,11 +45,11 @@ const fieldController = {
   getField: (req, res, next) => {
     return Field.findByPk(req.params.id, {
       include: [
-        Category
-        // { model: Comment, include: [{ model: User, attributes: { exclude: ['password'] } }] }, // 關聯 Comment model
+        Category,
+        { model: Comment, include: [{ model: User, attributes: { exclude: ['password'] } }] } // 關聯 Comment model
         // { model: User, as: 'FavoritedUsers', attributes: { exclude: ['password'] } } // 關聯 User model
-      ]
-      // order: [[Comment, 'createdAt', 'DESC']]
+      ],
+      order: [[Comment, 'createdAt', 'DESC']]
     })
       // .then(field => {
       //   if (!field) throw new Error('該案場不存在!')
