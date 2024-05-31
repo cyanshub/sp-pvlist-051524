@@ -41,6 +41,30 @@ const fieldController = {
         })
       })
       .catch(err => next(err))
+  },
+  getField: (req, res, next) => {
+    return Field.findByPk(req.params.id, {
+      include: [
+        Category
+        // { model: Comment, include: [{ model: User, attributes: { exclude: ['password'] } }] }, // 關聯 Comment model
+        // { model: User, as: 'FavoritedUsers', attributes: { exclude: ['password'] } } // 關聯 User model
+      ]
+      // order: [[Comment, 'createdAt', 'DESC']]
+    })
+      // .then(field => {
+      //   if (!field) throw new Error('該案場不存在!')
+      //   // 每次查詢時, 使資料的 viewCounts + 1
+      //   if (!field.viewCounts) { return field.update({ viewCounts: 1 }) }
+      //   return field.increment('viewCounts', { by: 1 })
+      // })
+      .then(field => {
+        // 防止使用者密碼外流
+        field = field.toJSON()
+        // const isFavorited = field.FavoritedUsers.some(f => f.id === req.user.id)
+        return res.render('field', { field })
+        // , isFavorited })
+      })
+      .catch(err => next(err))
   }
 }
 
