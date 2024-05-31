@@ -860,7 +860,7 @@ module.exports = {
       trans_amount: 0,
       full_address: '新北市五股區五權六路 9 號',
       local: '新北市五股區',
-      cover: 'https://www.trec.org.tw/attachment/10DEA2E3-FB19-427A-80F9-0BB72970CBA',
+      cover: 'https://www.texyear.com/data/editor/images/德淵總部太陽能發電設備.png',
       created_at: new Date(),
       updated_at: new Date(),
       category_id: pvCategories.建築水泥樓面屋頂
