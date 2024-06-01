@@ -4,9 +4,24 @@
   </div>
   <div class="col col-lg-6">
     <img class="img-responsive center-block" src="{{field.cover}}"
-      style="width:auto; max-width: 390px; margin-bottom: 25px; transition: opacity 0.5s; opacity:0;"
+      style="width:auto; max-width: 390px; margin-bottom: 1rem; transition: opacity 0.5s; opacity:0;"
       onload="this.style.opacity=1;">
     <br>
+    {{!-- 預留 Dash board 按鈕 --}}
+    <form action="/favorite/{{field.id}}?_method=DELETE" method="POST" style="display: contents;">
+      <button type="submit" class="btn btn-outline-dark mb-3 me-3">DASH BOARD</button>
+    </form>
+    
+    {{!-- 加入收藏按鈕 --}}
+    {{#if isFavorited }}
+    <form action="/favorite/{{field.id}}?_method=DELETE" method="POST" style="display: contents;">
+      <button type="submit" class="btn btn-outline-danger mb-3 me-3">移除最愛</button>
+    </form>
+    {{else}}
+    <form action="/favorite/{{field.id}}" method="POST" style="display: contents;">
+      <button type="submit" class="btn btn-outline-primary mb-3 me-3">加到最愛</button>
+    </form>
+    {{/if}}
   </div>
   <div class="col-12 col-lg-6">
     <h5><strong>綠電憑證資訊</strong></h5>

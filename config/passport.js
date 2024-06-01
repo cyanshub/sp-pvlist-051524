@@ -1,7 +1,7 @@
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const bcrypt = require('bcryptjs')
-const { User } = require('../models')
+const { User, Field } = require('../models')
 
 // 設置本地的登入策略 Set up passport strategy
 passport.use(new LocalStrategy({
@@ -30,7 +30,10 @@ passport.serializeUser((user, cb) => cb(null, user.id))
 
 // 在 passport 設定反序列化
 passport.deserializeUser((id, cb) => {
-  User.findByPk(id)
+  User.findByPk(id, {
+    // 關聯 User Model 的多對多關係 Model, 並寫上多對多關係的名稱(對應model設定的名稱)
+    include: [{ model: Field, as: 'FavoritedFields' }]
+  })
     .then(user => cb(null, user.toJSON()))
     .catch(err => cb(err))
 })

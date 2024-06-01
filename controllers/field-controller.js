@@ -28,7 +28,7 @@ const fieldController = {
       Category.findAll({ raw: true })
     ])
       .then(([fields, categories]) => {
-        const favoritedFieldsId = req.user?.FavoritedRestaurants ? req.user.FavoritedRestaurants.map(fr => fr.id) : []
+        const favoritedFieldsId = req.user?.FavoritedFields ? req.user.FavoritedFields.map(fr => fr.id) : []
         const data = fields.rows.map(r => ({
           ...r,
           isFavorited: favoritedFieldsId.includes(r.id)
@@ -46,8 +46,8 @@ const fieldController = {
     return Field.findByPk(req.params.id, {
       include: [
         Category,
-        { model: Comment, include: [{ model: User, attributes: { exclude: ['password'] } }] } // 關聯 Comment model
-        // { model: User, as: 'FavoritedUsers', attributes: { exclude: ['password'] } } // 關聯 User model
+        { model: Comment, include: [{ model: User, attributes: { exclude: ['password'] } }] }, // 關聯 Comment model
+        { model: User, as: 'FavoritedUsers', attributes: { exclude: ['password'] } } // 關聯 User model
       ],
       order: [[Comment, 'createdAt', 'DESC']]
     })
@@ -60,9 +60,8 @@ const fieldController = {
       .then(field => {
         // 防止使用者密碼外流
         field = field.toJSON()
-        // const isFavorited = field.FavoritedUsers.some(f => f.id === req.user.id)
-        return res.render('field', { field })
-        // , isFavorited })
+        const isFavorited = field.FavoritedUsers.some(f => f.id === req.user.id)
+        return res.render('field', { field, isFavorited })
       })
       .catch(err => next(err))
   }
