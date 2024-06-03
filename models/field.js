@@ -31,7 +31,10 @@ module.exports = (sequelize, DataTypes) => {
     transAmount: DataTypes.INTEGER,
     fullAddress: DataTypes.STRING,
     local: DataTypes.STRING,
-    cover: DataTypes.STRING
+    cover: DataTypes.STRING,
+    viewCounts: DataTypes.INTEGER,
+    commentCounts: DataTypes.INTEGER,
+    favoriteCounts: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Field',

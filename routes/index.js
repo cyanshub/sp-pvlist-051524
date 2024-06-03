@@ -39,7 +39,7 @@ router.get('/fields', authenticated, fieldController.getFields)
 // router.get('/fields/top', authenticated, fieldController.getTopFields)
 // router.get('/fields/trec', authenticated, fieldController.getTrecs)
 router.get('/fields/:id', authenticated, fieldController.getField)
-// router.get('/fields/:id/dashboard', authenticated, fieldController.getDashboard)
+router.get('/fields/:id/dashboard', authenticated, fieldController.getDashboard)
 
 // 設計路由: 留言功能相關
 router.post('/comments', authenticated, commentController.postComment)

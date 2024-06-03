@@ -8,10 +8,9 @@
       onload="this.style.opacity=1;">
     <br>
     {{!-- 預留 Dash board 按鈕 --}}
-    <form action="/favorite/{{field.id}}?_method=DELETE" method="POST" style="display: contents;">
-      <button type="submit" class="btn btn-outline-dark mb-3 me-3">DASH BOARD</button>
-    </form>
-    
+    <a href="/fields/{{field.id}}/dashboard" class="btn btn-outline-dark mb-3 me-3">
+    DASHBOARD</a>
+
     {{!-- 加入收藏按鈕 --}}
     {{#if isFavorited }}
     <form action="/favorite/{{field.id}}?_method=DELETE" method="POST" style="display: contents;">
@@ -24,13 +23,6 @@
     {{/if}}
   </div>
   <div class="col-12 col-lg-6">
-    <h5><strong>綠電憑證資訊</strong></h5>
-    <ul class="list-unstyled">
-      <li><strong>累積張數: </strong>{{formatNumber field.totalAmount}} 張</li>
-      <li><strong>交易張數: </strong>{{formatNumber field.transAmount}} 張</li>
-      <li><strong>剩餘張數: </strong>{{formatNumber field.remainAmount}} 張</li>
-    </ul>
-    <br>
     <h5><strong>場域資訊</strong></h5>
     <ul class="list-unstyled">
       <li><strong>類別: </strong>{{field.Category.name}}</li>
