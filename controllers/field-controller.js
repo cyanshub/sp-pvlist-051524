@@ -109,6 +109,36 @@ const fieldController = {
         return res.render('feeds', { fields, comments })
       })
       .catch(err => next(err))
+  },
+  getFavorites: (req, res, next) => {
+    const DEFAULT_LIMIT = 12 // 預設每頁顯示幾筆資料
+    const categoryId = Number(req.query.categoryId) || ''
+    const page = Number(req.query.page) || 1 // 預設第一頁或從query string拿資料
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT // 預設每頁顯示資料數或從query string拿資料
+    const offset = getOffset(limit, page)
+    return Category.findAll({ raw: true })
+      .then(categories => {
+        // 取得使用者收藏案場
+        const resultCategory = req.user.FavoritedFields
+        let resultPage = resultCategory
+
+        // 如果偵測到 categoryId 有輸入數值, 則依其進行 filter
+        if (typeof categoryId === 'number') {
+          resultPage = resultCategory.filter(field => field.categoryId === categoryId)
+        }
+
+        const result = resultPage
+          .slice(offset, offset + limit) // 對案場進行分頁
+          .sort((a, b) => new Date(b.id) - new Date(a.id)) // 對案場列表進行排序
+
+        return res.render('favorites', {
+          fields: result,
+          categories,
+          categoryId,
+          pagination: getPagination(limit, page, resultPage.length)
+        })
+      })
+      .catch(err => next(err))
   }
 }
 
