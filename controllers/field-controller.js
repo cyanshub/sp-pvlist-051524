@@ -83,6 +83,32 @@ const fieldController = {
         return res.render('field-dashboard', { field: field.toJSON(), isFavorited })
       })
       .catch(err => next(err))
+  },
+  getFeeds: (req, res, next) => {
+    return Promise.all([
+      Field.findAll({
+        limit: 5, // 只取前5筆資料
+        order: [['createdAt', 'DESC'], ['id', 'ASC']], // 陣列第一個參數可指定關聯model, 若無可省略; 可放入多組陣列
+        include: [Category], // 陣列第一個參數可指定關聯model, 若無可省略; 可放入多組陣列
+        raw: true,
+        nest: true
+      }),
+      Comment.findAll({
+        limit: 10, // 只取前10筆資料
+        order: [['createdAt', 'DESC'], ['id', 'ASC']],
+        include: [
+          { model: User, attributes: { exclude: ['password'] } },
+          Field],
+        raw: true,
+        nest: true
+      })
+    ])
+      .then(([fields, comments]) => {
+        if (!fields) throw new Error('該案場不存在!')
+        if (!comments) throw new Error('該評論不存在!')
+        return res.render('feeds', { fields, comments })
+      })
+      .catch(err => next(err))
   }
 }
 
