@@ -1,0 +1,22 @@
+{{!-- 控制是否要顯示搜尋表單 --}}
+{{#if isSearched}}
+  {{!-- 搜尋表單 --}}
+  <div class="search-bar">
+    <div class="search-bar-inner">
+      {{!-- 利用 isSearched 決定要搜尋對應哪個路頁面 --}}
+      <form action="{{isSearched}}?categoryId={{categoryId}}&keyword={{keyword}}" id="search-form">
+        <div class="input-group">
+
+          {{!-- 記住類別資訊 --}}
+          <input type="hidden" name="categoryId" value="{{categoryId}}"/>
+
+          {{!-- 發送搜尋關鍵字 --}}
+          <input type="text" id="search-input" class="form-control" name="keyword" value="{{keyword}}" placeholder="請輸入案場名稱或地點" aria-label="Field Name">
+          <button id="search-button" class="btn btn-outline-light" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+{{/if}}

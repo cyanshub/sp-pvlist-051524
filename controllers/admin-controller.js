@@ -4,6 +4,7 @@ const { Field, User, Category } = require('../models')
 // 載入所需的工具
 const { getOffset, getPagination } = require('../helpers/pagination-helper.js')
 const { localFileHandler } = require('../helpers/file-helpers.js')
+const { getFieldsFilter } = require('../helpers/field-filter-helpers.js')
 
 const adminController = {
   // 案場相關
@@ -18,11 +19,11 @@ const adminController = {
     const page = Number(req.query.page) || 1
     const limit = Number(req.query.limit) || DEFAULT_LIMIT
     const offset = getOffset(limit, page)
+    const keyword = req.query.keyword ? req.query.keyword.trim() : '' // 取得並修剪關鍵字
+
     return Promise.all([
-      Field.findAndCountAll({
+      Field.findAll({
         where: { ...categoryId ? { categoryId } : {} },
-        offset,
-        limit,
         raw: true,
         nest: true,
         order: [['id', 'DESC']],
@@ -31,11 +32,17 @@ const adminController = {
       Category.findAll({ raw: true })
     ])
       .then(([fields, categories]) => {
+        // 如果偵測到有輸入關鍵字, 則依其進行 filter
+        if (keyword.length > 0) fields = getFieldsFilter(fields, keyword)
+
+        const data = fields.slice(offset, offset + limit) // 對案場進行分頁
         return res.render('admin/fields', {
-          fields: fields.rows,
+          fields: data,
           categories,
           categoryId,
-          pagination: getPagination(limit, page, fields.count)
+          pagination: getPagination(limit, page, fields.length),
+          isSearched: '/admin/fields', // 決定搜尋表單發送位置為後台 index 頁面
+          keyword
         })
       })
       .catch(err => next(err))

@@ -55,7 +55,7 @@ module.exports = {
       total_amount: 28,
       remain_amount: 28,
       trans_amount: 0,
-      full_address: '新竹市東區新竹市東區明湖路1006巷166、168、186、188、198號',
+      full_address: '新竹市東區明湖路1006巷166、168、186、188、198號',
       local: '新竹市東區',
       cover: 'https://www.trec.org.tw/attachment/3438745D-BE0A-4977-A51B-3C3004F47CA3',
       created_at: new Date(),

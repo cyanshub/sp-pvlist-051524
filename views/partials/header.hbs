@@ -4,10 +4,14 @@
       <a class="navbar-brand" href="/">太陽光電場查詢回報系統</a>
       {{!-- 來自於 app.js 的 passport --}}
       {{#if user}}
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
-        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      {{!-- 排版搜尋表單、漢堡排 --}}
+      <div class="d-flex nowrap">
+        {{>field-search-form}}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+          aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
           {{#if user.isAdmin}}

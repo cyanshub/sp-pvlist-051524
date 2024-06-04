@@ -3,6 +3,7 @@ const { Field, Category, Comment, User } = require('../models')
 
 // 載入所需的工具
 const { getOffset, getPagination } = require('../helpers/pagination-helper.js')
+const { getFieldsFilter } = require('../helpers/field-filter-helpers.js')
 
 const fieldController = {
   getFields: (req, res, next) => {
@@ -11,16 +12,16 @@ const fieldController = {
     const page = Number(req.query.page) || 1 // 預設第一頁或從query string拿資料
     const limit = Number(req.query.limit) || DEFAULT_LIMIT // 預設每頁顯示資料數或從query string拿資料
     const offset = getOffset(limit, page)
+    const keyword = req.query.keyword ? req.query.keyword.trim() : '' // 取得並修剪關鍵字
+
     return Promise.all([
-      Field.findAndCountAll({
+      Field.findAll({
         raw: true,
         where: {
           // 展開運算子的優先級較低, 會比較慢判斷
           // 若 categoryId 存在, 則展開 {categoryId}; 若不存在則展開 {}
           ...categoryId ? { categoryId } : {}
         },
-        offset,
-        limit,
         include: [Category],
         nest: true,
         order: [['id', 'DESC']]
@@ -29,15 +30,24 @@ const fieldController = {
     ])
       .then(([fields, categories]) => {
         const favoritedFieldsId = req.user?.FavoritedFields ? req.user.FavoritedFields.map(fr => fr.id) : []
-        const data = fields.rows.map(r => ({
-          ...r,
-          isFavorited: favoritedFieldsId.includes(r.id)
-        }))
+
+        // 如果偵測到有輸入關鍵字, 則依其進行 filter
+        if (keyword.length > 0) fields = getFieldsFilter(fields, keyword)
+
+        const data = fields
+          .slice(offset, offset + limit) // 對案場進行分頁
+          .map(r => ({
+            ...r,
+            isFavorited: favoritedFieldsId.includes(r.id)
+          }))
+
         return res.render('fields', {
           fields: data,
           categories,
           categoryId,
-          pagination: getPagination(limit, page, fields.count)
+          pagination: getPagination(limit, page, fields.length),
+          isSearched: '/fields', // 決定搜尋表單發送位置為 index 頁面
+          keyword
         })
       })
       .catch(err => next(err))
@@ -119,23 +129,30 @@ const fieldController = {
     return Category.findAll({ raw: true })
       .then(categories => {
         // 取得使用者收藏案場
-        const resultCategory = req.user.FavoritedFields
-        let resultPage = resultCategory
+        let fields = req.user.FavoritedFields || []
+
+        // 取得並修剪關鍵字
+        const keyword = req.query.keyword ? req.query.keyword.trim() : ''
+
+        // 如果偵測到有輸入關鍵字, 則依其進行 filter
+        if (keyword.length > 0) fields = getFieldsFilter(fields, keyword)
 
         // 如果偵測到 categoryId 有輸入數值, 則依其進行 filter
         if (typeof categoryId === 'number') {
-          resultPage = resultCategory.filter(field => field.categoryId === categoryId)
+          fields = fields.filter(field => field.categoryId === categoryId)
         }
 
-        const result = resultPage
+        const data = fields
           .slice(offset, offset + limit) // 對案場進行分頁
           .sort((a, b) => new Date(b.id) - new Date(a.id)) // 對案場列表進行排序
 
         return res.render('favorites', {
-          fields: result,
+          fields: data,
           categories,
           categoryId,
-          pagination: getPagination(limit, page, resultPage.length)
+          pagination: getPagination(limit, page, fields.length),
+          isSearched: '/fields/favorites', // 決定搜尋表單發送位置為 favorites頁面
+          keyword
         })
       })
       .catch(err => next(err))
