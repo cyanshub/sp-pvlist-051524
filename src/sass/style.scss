@@ -28,6 +28,14 @@ a {
   text-overflow: ellipsis; /* 使用省略號表示超出的部分 */
 }
 
+.image-container {
+  overflow: hidden; /* 隱藏溢出部分 */
+}
+
+.image-container img{
+  object-fit: cover; /* 保持原始比例，填滿容器 */
+}
+
 .form-signup,
 .form-signin {
   width: 40%;

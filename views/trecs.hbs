@@ -1,0 +1,103 @@
+{{> field-tabs route='trecFields'}}
+<h1>TOP10 綠電憑證先鋒</h1>
+<hr />
+<div class="row mt-5">
+
+{{!-- 依累積量排序 --}}
+<div class="col-md-4">
+  <div class="card">
+    <div class="card-header">
+      累積總量前10名案場
+    </div>
+    <div class="card-body">
+      {{#each fieldsTotal}}
+      <div>
+        <h4>
+          <div class="text-container">
+            <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
+          </div>
+          <a href="/fields?categoryId={{this.Category.id}}" style="text-decoration:none; color: black">
+            <small class="fs-6">[{{this.Category.name}}]</small></a>
+        </h4>
+        <div class="image-container">
+          <a href="/fields/{{this.id}}">
+            <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
+              style="height:240px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+          </a>
+        </div>
+
+        <span class="small mb-0">綠電憑證累積總量: {{formatNumber this.totalAmount}} 張</span>,
+        {{relativeTimeFromNow this.createdAt}}
+        <hr>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+
+
+{{!-- 依交易量排序 --}}
+<div class="col-md-4">
+  <div class="card">
+    <div class="card-header">
+      交易總量前10名案場
+    </div>
+    <div class="card-body">
+      {{#each fieldsTrans}}
+      <div>
+        <h4>
+          <div class="text-container">
+            <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
+          </div>
+          <a href="/fields?categoryId={{this.Category.id}}" style="text-decoration:none; color: black">
+            <small class="fs-6">[{{this.Category.name}}]</small></a>
+        </h4>
+        <div class="image-container">
+          <a href="/fields/{{this.id}}">
+            <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
+              style="height:240px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+          </a>
+        </div>
+
+        <span class="small mb-0">綠電憑證交易總量: {{formatNumber this.transAmount}} 張</span>,
+        {{relativeTimeFromNow this.createdAt}}
+        <hr>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>
+
+
+
+{{!-- 依庫存量排序 --}}
+<div class="col-md-4">
+  <div class="card">
+    <div class="card-header">
+      庫存總量前10名案場
+    </div>
+    <div class="card-body">
+      {{#each fieldsRemain}}
+      <div>
+        <h4>
+          <div class="text-container">
+            <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
+          </div>
+          <a href="/fields?categoryId={{this.Category.id}}" style="text-decoration:none; color: black">
+            <small class="fs-6">[{{this.Category.name}}]</small></a>
+        </h4>
+        <div class="image-container">
+          <a href="/fields/{{this.id}}">
+            <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
+              style="height:240px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+          </a>
+        </div>
+
+        <span class="small mb-0">綠電憑證庫存總量: {{formatNumber this.remainAmount}} 張</span>,
+        {{relativeTimeFromNow this.createdAt}}
+        <hr>
+      </div>
+      {{/each}}
+    </div>
+  </div>
+</div>

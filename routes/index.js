@@ -37,7 +37,7 @@ router.get('/fields', authenticated, fieldController.getFields)
 router.get('/fields/feeds', authenticated, fieldController.getFeeds)
 router.get('/fields/favorites', authenticated, fieldController.getFavorites)
 // router.get('/fields/top', authenticated, fieldController.getTopFields)
-// router.get('/fields/trec', authenticated, fieldController.getTrecs)
+router.get('/fields/trecs', authenticated, fieldController.getTrecs)
 router.get('/fields/:id', authenticated, fieldController.getField)
 router.get('/fields/:id/dashboard', authenticated, fieldController.getDashboard)
 

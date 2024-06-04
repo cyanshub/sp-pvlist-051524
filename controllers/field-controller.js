@@ -156,6 +156,39 @@ const fieldController = {
         })
       })
       .catch(err => next(err))
+  },
+  getTrecs: (req, res, next) => {
+    return Promise.all([
+      Field.findAll({
+        limit: 10, // 只取前10筆資料
+        order: [['totalAmount', 'DESC'], ['id', 'ASC']],
+        include: [Category],
+        raw: true,
+        nest: true
+      }),
+      Field.findAll({
+        limit: 10, // 只取前10筆資料
+        order: [['transAmount', 'DESC'], ['id', 'ASC']],
+        include: [Category],
+        raw: true,
+        nest: true
+      }),
+      Field.findAll({
+        limit: 10, // 只取前10筆資料
+        order: [['remainAmount', 'DESC'], ['id', 'ASC']],
+        include: [Category],
+        raw: true,
+        nest: true
+      })
+
+    ])
+      .then(([fieldsTotal, fieldsTrans, fieldsRemain]) => {
+        if (!fieldsTotal) throw new Error('案場不存在!')
+        if (!fieldsTrans) throw new Error('案場不存在!')
+        if (!fieldsRemain) throw new Error('案場不存在!')
+        return res.render('trecs', { fieldsTotal, fieldsTrans, fieldsRemain })
+      })
+      .catch(err => next(err))
   }
 }
 
