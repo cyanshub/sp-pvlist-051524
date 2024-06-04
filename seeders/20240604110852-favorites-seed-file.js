@@ -31,7 +31,7 @@ module.exports = {
             updated_at: new Date()
           })
           userFavorites.add(field.id) // 標記用戶已評論過這家餐廳
-          console.log(`使用者${user.id}收藏案場${field.id}!`)
+          console.log(`使用者${user.name}收藏案場${field.id}!`)
         }
       }
     })
