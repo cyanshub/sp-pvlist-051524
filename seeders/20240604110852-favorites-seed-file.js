@@ -4,13 +4,13 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     // 取出要關聯的 users 資料表的 users.id
     const users = await queryInterface.sequelize.query(
-      'SELECT `id` FROM `users`;',
+      'SELECT `id`, `name` FROM `users`;',
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     )
 
     // 取出要關聯的 fields 資料表的 fields.id
     const fields = await queryInterface.sequelize.query(
-      'SELECT `id` FROM `fields`;',
+      'SELECT `id`, `name` FROM `fields`;',
       { type: queryInterface.sequelize.QueryTypes.SELECT }
     )
 
@@ -31,7 +31,7 @@ module.exports = {
             updated_at: new Date()
           })
           userFavorites.add(field.id) // 標記用戶已評論過這家餐廳
-          console.log(`使用者${user.name}收藏案場${field.id}!`)
+          console.log(`使用者${user.id}收藏案場${field.id}!`)
         }
       }
     })

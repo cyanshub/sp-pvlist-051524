@@ -127,8 +127,11 @@ const userController = {
             isFollowed: req.user.Followings.some(f => f.id === user.id)
             // 判斷目前登入的使用者帳戶的追蹤者名單是否包含傳入的使用者
           }))
-          // 利用.sort箭頭函式排序(a,b): 由大到小 b - a; 由小到大 a - b
-          // .sort((a, b) => b.followerCount - a.followerCount)
+          // 子查詢 sequelize.literal 可能會導致 Sequelize 難以正確解析和應用排序規則。確保子查詢返回的 followers_counts 是有效的且能正確排序的數值, 故利用.sort箭頭函式排序(a,b): 由大到小 b - a; 由小到大 a - b
+          .sort((a, b) => {
+            if (b.followerCount === a.followerCount) { return a.id - b.id }
+            return b.followerCount - a.followerCount
+          })
         return res.render('top-users', { users: result })
       })
       .catch(err => next(err))
