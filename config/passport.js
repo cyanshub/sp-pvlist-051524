@@ -32,11 +32,22 @@ passport.serializeUser((user, cb) => cb(null, user.id))
 passport.deserializeUser((id, cb) => {
   User.findByPk(id, {
     // 關聯 User Model 的多對多關係 Model, 並寫上多對多關係的名稱(對應model設定的名稱)
-    include: [{
-      model: Field,
-      as: 'FavoritedFields',
-      order: [['createdAt', 'DESC']] // 指定按照 createdAt 字段降序排序
-    }]
+    include: [
+      { // 收藏的案場
+        model: Field,
+        as: 'FavoritedFields',
+        order: [['createdAt', 'DESC']] // 指定按照 createdAt 字段降序排序
+      },
+      { // 撈出追蹤自己的人
+        model: User,
+        as: 'Followers',
+        order: [['createdAt', 'DESC']] // 指定按照 createdAt 字段降序排序
+      },
+      { // 撈出自己追蹤的人
+        model: User,
+        as: 'Followings',
+        order: [['createdAt', 'DESC']] // 指定按照 createdAt 字段降序排序
+      }]
   })
     .then(user => cb(null, user.toJSON()))
     .catch(err => cb(err))

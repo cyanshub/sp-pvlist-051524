@@ -11,11 +11,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate (models) {
       // define association here
+      // 使用者與評論的關聯
       User.hasMany(models.Comment, { foreignKey: 'userId' })
+      // 使用者與案場的關聯
       User.belongsToMany(models.Field, {
         through: models.Favorite, // 透過 Favorite 表來建立關聯
         foreignKey: 'userId', // 對 Favorite 表設定 FK
         as: 'FavoritedFields' // 幫這個關聯取個名稱
+      })
+      // 使用者自關聯: 撈出追蹤自己的人
+      User.belongsToMany(models.User, {
+        through: models.Followship,
+        foreignKey: 'followingId',
+        as: 'Followers'
+      })
+      // 使用者自關聯: 撈出自己追蹤的人
+      User.belongsToMany(models.User, {
+        through: models.Followship,
+        foreignKey: 'followerId',
+        as: 'Followings'
       })
     }
   }

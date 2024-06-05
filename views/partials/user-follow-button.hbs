@@ -1,0 +1,10 @@
+{{!-- 追蹤按鈕 --}}
+{{#if this.isFollowed }}
+<form action="/following/{{this.id}}?_method=DELETE" method="POST" style="display: contents;">
+  <button type="submit" class="btn btn-outline-danger">取消追蹤</button>
+</form>
+{{else}}
+<form action="/following/{{this.id}}" method="POST" style="display: contents;">
+  <button type="submit" class="btn btn-outline-primary">追蹤</button>
+</form>
+{{/if}}
