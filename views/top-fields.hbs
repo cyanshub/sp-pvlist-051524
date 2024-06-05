@@ -28,7 +28,7 @@
               <h4>
                 <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
               </h4>
-              <span class="bg-secondary badge my-3">追蹤人數：{{this.favoriteCounts}}</span>
+              <span class="bg-info badge my-3">追蹤人數：{{this.favoriteCounts}}</span>
               <ul class="list-unstyled">
                 <li><strong>累積張數: </strong>{{formatNumber this.totalAmount}} 張</li>
                 <li><strong>交易張數: </strong>{{formatNumber this.transAmount}} 張</li>
@@ -36,17 +36,7 @@
 
                 {{!-- 加入收藏功能 --}}
                 {{!-- 加入是否收藏的條件判斷式 --}}
-                <div>
-                  {{#if isFavorited}}
-                  <form action="/favorite/{{this.id}}?_method=DELETE" method="POST">
-                    <button type="submit" class="btn btn-outline-danger m-1">移除收藏</button>
-                  </form>
-                  {{else}}
-                  <form action="/favorite/{{this.id}}" method="POST">
-                    <button type="submit" class="btn btn-outline-primary m-1">加入最愛</button>
-                  </form>
-                  {{/if}}
-                </div>
+                <div>{{> field-favorite-button}}</div>
               </ul>
             </div>
           </div>
@@ -84,7 +74,7 @@
               <h4>
                 <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
               </h4>
-              <span class="bg-secondary badge my-3">留言次數：{{this.commentCounts}}</span>
+              <span class="bg-info badge my-3">留言次數：{{this.commentCounts}}</span>
               <ul class="list-unstyled">
                 <li><strong>累積張數: </strong>{{formatNumber this.totalAmount}} 張</li>
                 <li><strong>交易張數: </strong>{{formatNumber this.transAmount}} 張</li>
@@ -92,17 +82,7 @@
 
                 {{!-- 加入收藏功能 --}}
                 {{!-- 加入是否收藏的條件判斷式 --}}
-                <div>
-                  {{#if isFavorited}}
-                  <form action="/favorite/{{this.id}}?_method=DELETE" method="POST">
-                    <button type="submit" class="btn btn-outline-danger m-1">移除收藏</button>
-                  </form>
-                  {{else}}
-                  <form action="/favorite/{{this.id}}" method="POST">
-                    <button type="submit" class="btn btn-outline-primary m-1">加入最愛</button>
-                  </form>
-                  {{/if}}
-                </div>
+                <div>{{> field-favorite-button}}</div>
               </ul>
             </div>
           </div>

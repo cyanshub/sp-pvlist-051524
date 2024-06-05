@@ -10,11 +10,16 @@ const commentController = {
     if (text.trim().length === 0) throw new Error('請勿輸入空白字串!')
     return Promise.all([
       User.findByPk(userId),
-      Field.findByPk(fieldId)
+      Field.findByPk(fieldId, {
+        include: [Comment]
+      })
     ])
       .then(([user, field]) => {
         if (!user) throw new Error('下評論的使用者不存在!')
         if (!field) throw new Error('被評論的案場不存在!')
+        field.update({
+          commentCounts: field.Comments.length + 1
+        })
         return Comment.create({
           text,
           userId,
@@ -28,6 +33,7 @@ const commentController = {
       .catch(err => next(err))
   },
   deleteComment: (req, res, next) => {
+    const { fieldId } = req.body
     const commentId = req.params.id
     const userId = req.user.id
     return Promise.all([
@@ -37,10 +43,14 @@ const commentController = {
           { model: User, attributes: { exclude: ['password'] } }
         ]
       }),
-      User.findByPk(userId)
+      User.findByPk(userId),
+      Field.findByPk(fieldId, {
+        include: [Comment]
+      })
     ])
-      .then(([comment, user]) => {
+      .then(([comment, user, field]) => {
         if (!comment) throw new Error('該則訊息不存在!')
+        if (!field) throw new Error('被評論的案場不存在!')
 
         // 如果被刪的訊息不是自己的則擋掉, 管理員例外
         if (user.isAdmin !== true && user.email !== comment.User.email) {
@@ -48,6 +58,9 @@ const commentController = {
           err.status = 404
           throw err
         }
+        field.update({
+          commentCounts: field.Comments.length < 1 ? 0 : field.Comments.length - 1
+        })
         return comment.destroy()
       })
       .then(deletedComment => {

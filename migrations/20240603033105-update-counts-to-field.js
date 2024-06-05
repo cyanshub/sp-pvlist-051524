@@ -40,8 +40,8 @@ module.exports = {
     // 回滾操作可以選擇性地清除或重置欄位
     // 這裡假設重置為 0
     await queryInterface.bulkUpdate('Fields', {
-      commentCounts: 0,
-      favoriteCounts: 0
+      comment_counts: 0,
+      favorite_counts: 0
     })
   }
 }

@@ -1,0 +1,11 @@
+{{!-- 加入收藏功能 --}}
+{{!-- 加入是否收藏的條件判斷式 --}}
+{{#if isFavorited}}
+<form action="/favorite/{{#if field.id}}{{field.id}}{{else}}{{this.id}}{{/if}}?_method=DELETE" method="POST"  style="display: contents;">
+  <button type="submit" class="btn btn-outline-danger mb-3 me-3">移除收藏</button>
+</form>
+{{else}}
+<form action="/favorite/{{#if field.id}}{{field.id}}{{else}}{{this.id}}{{/if}}" method="POST"  style="display: contents;">
+  <button type="submit" class="btn btn-outline-primary mb-3 me-3">加入最愛</button>
+</form>
+{{/if}}

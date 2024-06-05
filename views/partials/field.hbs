@@ -12,15 +12,7 @@
     DASHBOARD</a>
 
     {{!-- 加入收藏按鈕 --}}
-    {{#if isFavorited }}
-    <form action="/favorite/{{field.id}}?_method=DELETE" method="POST" style="display: contents;">
-      <button type="submit" class="btn btn-outline-danger mb-3 me-3">移除最愛</button>
-    </form>
-    {{else}}
-    <form action="/favorite/{{field.id}}" method="POST" style="display: contents;">
-      <button type="submit" class="btn btn-outline-primary mb-3 me-3">加到最愛</button>
-    </form>
-    {{/if}}
+    {{> field-favorite-button}}
   </div>
   <div class="col-12 col-lg-6">
     <h5><strong>場域資訊</strong></h5>
@@ -36,6 +28,7 @@
 <h3 class="mb-3">所有評論：</h3>
 {{#each field.Comments}}
 <form action="/comments/{{this.id}}?_method=DELETE" method="POST" class="float-end">
+  <input type="hidden" name="fieldId" value="{{../field.id}}">
   <button type="submit" class="btn btn-danger" onclick="return confirm(`確定要刪除這則評論嗎?`)" {{#if ../user.isAdmin}} {{else}}
     {{#ifCond this.User.name ../user.name }} {{else}} disabled {{/ifCond}} {{/if}}>Delete</button>
 </form>
