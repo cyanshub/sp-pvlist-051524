@@ -26,13 +26,13 @@
       </a>
       <div class="card-body">
         <p class="card-text">
-          <span class="badge bg-secondary">{{this.Category.name}}</span>
-        <div class="mt-0 text-container">
-          <a href="/fields/{{this.id}}">{{this.name}}</a>
-          {{!-- 有別於首頁, 顯示更細節的資訊 --}}   
-          <p class="mb-0">綠電憑證累積總量: {{formatNumber this.totalAmount}} 張</p>
-          <p class="mb-0 text-container">{{this.fullAddress}}</p>
-        </div>
+          <div class="mt-0 text-container">
+            <a href="/fields/{{this.id}}"><strong>{{this.name}}</strong></a>
+            {{!-- 有別於首頁, 顯示更細節的資訊 --}}   
+            <p class="mb-0">綠電憑證累積量: {{formatNumber this.totalAmount}} 張</p>
+            <p class="mb-0">綠電憑證交易量: {{formatNumber this.transAmount}} 張</p>
+            <p class="mb-0 text-container">{{this.fullAddress}}</p>
+          </div>
         </p>
 
       </div>

@@ -14,8 +14,11 @@
         <div>
           <h4>
             <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
-            <a href="/fields?categoryId={{this.Category.id}}" style="text-decoration:none; color: black">
-              <small class="fs-6">[{{this.Category.name}}]</small></a>
+            <div>
+              <a href="/fields?categoryId={{this.Category.id}}" style="text-decoration:none; color: black">
+                <small class="fs-6">[{{this.Category.name}}]</small>
+              </a>
+            </div>
           </h4>
           <a href="/fields/{{this.id}}">
             <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"

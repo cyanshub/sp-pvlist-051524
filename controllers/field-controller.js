@@ -189,6 +189,40 @@ const fieldController = {
         return res.render('trecs', { fieldsTotal, fieldsTrans, fieldsRemain })
       })
       .catch(err => next(err))
+  },
+  getTopFields: (req, res, next) => {
+    return Promise.all([
+      Field.findAll({
+        order: [['favoriteCounts', 'DESC'], ['id', 'DESC']],
+        limit: 10,
+        raw: true
+      }),
+      Field.findAll({
+        order: [['commentCounts', 'DESC'], ['id', 'DESC']],
+        limit: 10,
+        raw: true
+      })
+    ])
+      .then(([fieldsFC, fieldsCC]) => {
+        if (!fieldsFC) throw new Error('案場不存在!')
+        if (!fieldsCC) throw new Error('案場不存在!')
+
+        // 判別查詢的案場是否在使用者的收藏案場名單
+        const favoritedFieldsId = req.user?.FavoritedFields ? req.user.FavoritedFields.map(fr => fr.id) : []
+
+        const dataFC = fieldsFC.map(r => ({
+          ...r,
+          isFavorited: favoritedFieldsId.includes(r.id)
+        }))
+
+        const dataCC = fieldsCC.map(r => ({
+          ...r,
+          isFavorited: favoritedFieldsId.includes(r.id)
+        }))
+
+        return res.render('top-fields', { fieldsFC: dataFC, fieldsCC: dataCC })
+      })
+      .catch(err => next(err))
   }
 }
 
