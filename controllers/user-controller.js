@@ -1,6 +1,5 @@
 // 載入所需 npm 套件
 const bcrypt = require('bcryptjs')
-const sequelize = require('sequelize')
 
 // 載入所需 model
 const { User, Field, Favorite, Followship } = require('../models')
@@ -111,27 +110,17 @@ const userController = {
     const limit = 10 // 只取出5名用戶
     return User.findAll({
       limit,
-      attributes: {
-        include: [[sequelize.literal('(SELECT COUNT(*) FROM followships WHERE followships.following_id = User.id)'), 'followers_counts']], // 計算追蹤數作為新的屬性
-        exclude: ['password'] // 避免密碼外洩
-      },
-      order: [[sequelize.literal('followers_counts'), 'DESC'], ['id', 'ASC']], // 依追蹤數排序
+      attributes: { exclude: ['password'] }, // 避免密碼外洩
+      order: [['followerCounts', 'DESC'], ['id', 'ASC']], // 依追蹤數排序
       include: [{ model: User, as: 'Followers', attributes: { exclude: ['password'] } }] // 取出追蹤此user的人
     })
       .then(users => {
         const result = users
-          // 傳入的 map 函式記得用小括號包住
-          .map(user => ({
+          .map(user => ({ // 傳入的 map 函式記得用小括號包住
             ...user.toJSON(), // 使用展開運算子倒入 map 函式傳入的 user 屬性
-            followerCount: user.Followers.length, // 傳入的使用者與其追隨自己的數量
             isFollowed: req.user.Followings.some(f => f.id === user.id)
             // 判斷目前登入的使用者帳戶的追蹤者名單是否包含傳入的使用者
           }))
-          // 子查詢 sequelize.literal 可能會導致 Sequelize 難以正確解析和應用排序規則。確保子查詢返回的 followers_counts 是有效的且能正確排序的數值, 故利用.sort箭頭函式排序(a,b): 由大到小 b - a; 由小到大 a - b
-          .sort((a, b) => {
-            if (b.followerCount === a.followerCount) { return a.id - b.id }
-            return b.followerCount - a.followerCount
-          })
         return res.render('top-users', { users: result })
       })
       .catch(err => next(err))
@@ -151,6 +140,10 @@ const userController = {
       .then(([user, followship]) => {
         if (!user) throw new Error('要追蹤的使用者不存在!')
         if (followship) throw new Error('已追蹤過該名使用者!')
+        user.update({
+          // 新增收藏時, 追蹤數 + 1
+          followerCounts: user.followerCounts + 1
+        })
         return Followship.create({ followingId, followerId })
       })
       .then(newFollowShip => {
@@ -174,6 +167,10 @@ const userController = {
       .then(([user, followship]) => {
         if (!user) throw new Error('要追蹤的使用者不存在!')
         if (!followship) throw new Error('尚未追蹤過該名使用者!')
+        user.update({
+          // 新增收藏時, 追蹤數 + 1
+          followerCounts: user.followerCounts < 1 ? user.followerCounts = 0 : user.followerCounts - 1
+        })
         return followship.destroy()
       })
       .then(deletedFollowship => {
