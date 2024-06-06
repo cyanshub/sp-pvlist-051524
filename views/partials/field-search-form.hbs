@@ -1,7 +1,7 @@
 {{!-- 控制是否要顯示搜尋表單 --}}
 {{#if isSearched}}
   {{!-- 搜尋表單 --}}
-  <div class="search-bar">
+  <div class="search-bar me-5">
     <div class="search-bar-inner">
       {{!-- 利用 isSearched 決定要搜尋對應哪個路頁面 --}}
       <form action="{{isSearched}}?categoryId={{categoryId}}&keyword={{keyword}}" id="search-form">
