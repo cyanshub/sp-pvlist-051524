@@ -23,7 +23,7 @@ module.exports = {
       for (let i = 0; i < count; i++) {
         const userFollowing = usersFollowing[Math.floor(Math.random() * usersFollowing.length)]
         // 如果用戶尚未收藏過此案場，則建立收藏關係
-        if (!userFollowships.has(userFollower.id)) {
+        if (!userFollowships.has(userFollowing.id)) {
           followships.push({
             follower_id: userFollower.id,
             following_id: userFollowing.id,

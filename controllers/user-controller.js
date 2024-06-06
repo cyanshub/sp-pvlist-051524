@@ -2,7 +2,10 @@
 const bcrypt = require('bcryptjs')
 
 // 載入所需 model
-const { User, Field, Favorite, Followship } = require('../models')
+const { User, Field, Favorite, Followship, Comment } = require('../models')
+
+// 載入所需工具
+const { localAvatarHandler } = require('../helpers/file-helpers')
 
 const userController = {
   signUpPage: (req, res, next) => {
@@ -176,6 +179,83 @@ const userController = {
       .then(deletedFollowship => {
         res.redirect('back')
         return { followship: deletedFollowship }
+      })
+      .catch(err => next(err))
+  },
+  getUser: (req, res, next) => {
+    return User.findByPk(req.params.id, {
+      attributes: { exclude: ['password'] },
+      include: [
+        { model: Comment, include: [Field] },
+        { model: User, as: 'Followings', attributes: { exclude: ['password'] } }, // 訂閱別人
+        { model: User, as: 'Followers', attributes: { exclude: ['password'] } } // 粉絲
+      ]
+    })
+      .then(user => {
+        if (!user) throw new Error('使用者不存在!')
+
+        // 確認收藏數更新到正確數字
+        user.update({
+          followerCounts: user.Followers.length
+        })
+
+        console.log('追蹤自己的人數:', user.Followers.length, '人')
+
+        // 整理 user 資料
+        user = user.toJSON()
+
+        // 使用 Set 來追蹤已經出現過的 Field.id
+        const seenFieldIds = new Set()
+
+        // 遍歷每個 Comment，清理重複的 Field.id
+        user.Comments = user.Comments.map(comment => {
+          const fieldId = comment.Field.id
+          if (seenFieldIds.has(fieldId)) {
+            return null // 如果 Field.id 已經出現過，將 comment 設為 null
+          } else {
+            seenFieldIds.add(fieldId) // 將 Field.id 加入到 Set 中
+            return comment // 返回原始的 comment
+          }
+        }).filter(Boolean) // 過濾掉為 null 的 comment
+
+        return res.render('profile', { user })
+      })
+      .catch(err => next(err))
+  },
+  editUser: (req, res, next) => {
+    return User.findByPk(req.params.id, {
+      attributes: { exclude: ['password'] },
+      raw: true
+    })
+      .then(user => {
+        if (!user) throw new Error('使用者不存在!')
+        return res.render('edit-user', { user })
+      })
+  },
+  putUser: (req, res, next) => {
+  // 使用者只能編輯自己的資料: 比對傳入的id 與 passport的id
+    if (Number(req.params.id) !== req.user.id) throw new Error('只能編輯自己的使用者資料!')
+    const { name } = req.body
+    if (!name.trim()) throw new Error('需要輸入使用者名稱!')
+    const file = req.file // 根據之前修正的form content, 把檔案從req取出來
+    return Promise.all([
+      User.findByPk(req.params.id, {
+        attributes: { exclude: ['password'] }
+      }),
+      localAvatarHandler(file) // 將圖案寫入指定資料夾, 並回傳圖檔路徑
+    ])
+      .then(([user, filePath]) => {
+      // 檢查使用者是否存在
+        if (!user) throw new Error('使用者不存在!')
+        return user.update({
+          name,
+          avatar: filePath || user.avatar
+        })
+      })
+      .then(updatedUser => {
+        req.flash('success_messages', '已變更成功!')
+        res.redirect(`/users/${updatedUser.id}`)
+        return { user: updatedUser }
       })
       .catch(err => next(err))
   }
