@@ -8,7 +8,7 @@ module.exports = {
   async up (queryInterface, Sequelize) {
     // 獲取所有的 users id
     const users = await queryInterface.sequelize.query(
-      'SELECT id FROM users;',
+      'SELECT id, name FROM users;',
       { type: Sequelize.QueryTypes.SELECT }
     )
 
@@ -49,7 +49,7 @@ module.exports = {
         }
       )
 
-      console.log('更新 user:', users[i].id, '使用圖像:', results[i].picture.large)
+      console.log('更新使用者', users[i].name, '使用圖像:', results[i].picture.large)
     }
   },
 
