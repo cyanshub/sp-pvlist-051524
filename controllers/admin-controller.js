@@ -124,7 +124,9 @@ const adminController = {
         })
       })
       .then(editField => {
-        res.redirect('/admin/fields')
+        req.flash('success_messages', '變更成功!')
+        // 第一次重定向
+        res.redirect('back')
         return editField
       })
       .catch(err => next(err))
