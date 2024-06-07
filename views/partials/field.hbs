@@ -29,8 +29,8 @@
 {{#each field.Comments}}
 <form action="/comments/{{this.id}}?_method=DELETE" method="POST" class="float-end">
   <input type="hidden" name="fieldId" value="{{../field.id}}">
-  <button type="submit" class="btn btn-danger" onclick="return confirm(`確定要刪除這則評論嗎?`)" {{#if ../user.isAdmin}} {{else}}
-    {{#ifCond this.User.name ../user.name }} {{else}} disabled {{/ifCond}} {{/if}}>Delete</button>
+  <button type="submit" class="btn btn-danger" onclick="return confirm(`確定要刪除這則評論嗎?`)" {{#if ../userAuth.isAdmin}} {{else}}
+    {{#ifCond this.User.name ../userAuth.name }} {{else}} disabled {{/ifCond}} {{/if}}>Delete</button>
 </form>
 <blockquote class="blockquote mb-0">
   <h4><a href="/users/{{this.User.id}}">{{this.User.name}}</a></h4>

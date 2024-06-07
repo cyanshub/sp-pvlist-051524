@@ -48,12 +48,12 @@ const commentController = {
         include: [Comment]
       })
     ])
-      .then(([comment, user, field]) => {
+      .then(([comment, userAuth, field]) => {
         if (!comment) throw new Error('該則訊息不存在!')
         if (!field) throw new Error('被評論的案場不存在!')
 
         // 如果被刪的訊息不是自己的則擋掉, 管理員例外
-        if (user.isAdmin !== true && user.email !== comment.User.email) {
+        if (userAuth.isAdmin !== true && userAuth.email !== comment.User.email) {
           const err = new Error('禁止刪除root使用者的評論!')
           err.status = 404
           throw err

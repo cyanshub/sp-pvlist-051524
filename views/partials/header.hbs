@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <a class="navbar-brand" href="/">太陽光電場查詢回報系統</a>
       {{!-- 來自於 app.js 的 passport --}}
-      {{#if user}}
+      {{#if userAuth}}
       {{!-- 排版搜尋表單、漢堡排 --}}
       <div class="d-flex nowrap">
         {{>field-search-form}}
@@ -13,19 +13,19 @@
       </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
-          {{#if user.isAdmin}}
+          {{#if userAuth.isAdmin}}
           <li class="nav-item me-1">
             <a href="/admin/fields" class="nav-link text-container">Admin 後台</a>
           </li>
           {{/if}}
           <li class="nav-item me-1 d-inline-flex align-items-center">
-            <span class="nav-link text-container">Hi, {{ user.name }}</span>
+            <span class="nav-link text-container">Hi, {{ userAuth.name }}</span>
           </li>
           
           <li class="nav-item me-1">
-            <a href="/users/{{user.id}}">
-            {{#if user.avatar}}
-            <img class="img-responsive center-block me-1" src="{{user.avatar}}"  width="40px" height="40px" style="width: 40px; border-radius: 50%" alt="使用者圖像">
+            <a href="/users/{{userAuth.id}}">
+            {{#if userAuth.avatar}}
+            <img class="img-responsive center-block me-1" src="{{userAuth.avatar}}"  width="40px" height="40px" style="width: 40px; border-radius: 50%" alt="使用者圖像">
             {{else}}
             <img src="https://fakeimg.pl/40/" class="me-1" width="40px" height="40px" style="border-radius: 50%;"/>
             {{/if}}
@@ -33,7 +33,7 @@
           </li>
           
           <li class="nav-item me-1">
-            <a href="/users/{{user.id}}" class="nav-link text-container">個人頁面</a>
+            <a href="/users/{{userAuth.id}}" class="nav-link text-container">個人頁面</a>
           </li>
           <li class="nav-item me-1">
             <a href="/logout"><button class="btn btn-outline-info my-sm-0 my-2">Logout</button></a>
