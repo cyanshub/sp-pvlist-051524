@@ -2,12 +2,15 @@
   {{!-- 名稱控制項 --}}
   <div class="form-row mb-3">
     <label class="form-label" for="name">使用者名稱</label>
-    <input class="form-control" type="text" name="name" id="name" placeholder="請輸入使用者名稱" value="{{user.name}}"
-      required>
+    <input class="form-control" type="text" name="name" id="name" placeholder="請輸入使用者名稱" value="{{user.name}}" required>
   </div>
   {{!-- 圖片控制項 --}}
   <div class="form-row mb-3">
     <label class="form-label" for="avatar">使用者頭像</label>
+
+    {{!-- 移除使用者頭像 --}}
+     <a href="/avatars/{{user.id}}" class="btn btn-link small mb-1" onclick="return confirm('確定要移除使用者頭像嗎?')">移除使用者頭像</a>
+
     <input class="form-control" type="file" class="form-control-file" id="avatar" name="avatar">
   </div>
   {{!-- 按鈕 --}}

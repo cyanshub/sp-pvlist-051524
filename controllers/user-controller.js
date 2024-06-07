@@ -231,6 +231,7 @@ const userController = {
         if (!user) throw new Error('使用者不存在!')
         return res.render('edit-user', { user })
       })
+      .catch(err => next(err))
   },
   putUser: (req, res, next) => {
   // 使用者只能編輯自己的資料: 比對傳入的id 與 passport的id
@@ -255,6 +256,24 @@ const userController = {
       .then(updatedUser => {
         req.flash('success_messages', '已變更成功!')
         res.redirect(`/users/${updatedUser.id}`)
+        return { user: updatedUser }
+      })
+      .catch(err => next(err))
+  },
+  getAvatar: (req, res, next) => {
+    const userId = req.params.userId
+    return User.findByPk(userId, {
+      attributes: { exclude: ['password'] }
+    })
+      .then(user => {
+        if (!user) throw new Error('使用者不存在!')
+        return user.update({
+          avatar: null
+        })
+      })
+      .then(updatedUser => {
+        req.flash('success_messages', '成功移除頭像!')
+        res.redirect('back')
         return { user: updatedUser }
       })
       .catch(err => next(err))
