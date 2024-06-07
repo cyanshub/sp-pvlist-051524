@@ -5,9 +5,13 @@
   <div class="col-12">
     {{!-- 使用者資訊 --}}
     <div class="card mb-3">
-      <div class="row g-0">
-        <div class="col-md-4">
-          <img class="img-responsive center-block mb-3" src="{{user.avatar}}" style="width: 300px;" alt="使用者圖像">
+      <div class="row g-0 align-items-center">
+        <div class="col-md-4">          
+          {{#if user.avatar}}
+          <img class="img-responsive center-block" src="{{user.avatar}}" style="width: 180px;" alt="使用者圖像">
+          {{else}}
+          <img src="https://fakeimg.pl/180/" width="180px" height="180px" />
+          {{/if}}
         </div>
         <div class="col-md-8">
           <div class="card-body">
@@ -56,7 +60,7 @@
         style="background: white; height: auto; cursor:pointer;">
         {{#each user.Followings}}
         <a href="/users/{{this.id}}">
-          {{#if this.avater}}
+          {{#if this.avatar}}
           <img src="{{this.avatar}}" class="img-thumbnail ms-1" width="120px" height="120px"
             style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;" />
           {{else}}

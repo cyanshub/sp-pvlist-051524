@@ -6,6 +6,7 @@
     <tr class="table-dark">
       <th scope="col">序號</th>
       <th scope="col">使用者名稱</th>
+      <th scope="col">使用者頭像</th>
       <th scope="col">使用者帳號</th>
       <th scope="col">使用者權限</th>
       <th scope="col"></th>
@@ -15,8 +16,20 @@
     {{#each users}}
     <tr>
       <th scope="row">{{this.id}}</th>
-      <td>{{this.name}}</td>
+      <td><a href="/users/{{this.id}}">{{this.name}}</a></td>
+      <td>
+        <a href="/users/{{this.id}}">
+          {{#if this.avatar}}
+          <img class="img-responsive center-block me-1" src="{{this.avatar}}" width="30px" height="30px"
+            style="width: 30px; border-radius: 25%" alt="使用者圖像">
+          {{else}}
+          <img src="https://fakeimg.pl/40/" class="me-1" width="30px" height="30px" style="border-radius: 25%;" />
+          {{/if}}
+        </a>
+      </td>
+
       <td>{{this.email}}</td>
+      
       <td>{{#if this.isAdmin}}admin{{else}}user{{/if}}</td>
       <td>
         <form action="/admin/users/{{this.id}}?_method=PATCH" method="POST" style="display: inline;">
