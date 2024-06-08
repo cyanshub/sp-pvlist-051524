@@ -335,7 +335,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/684FC647-8747-484C-AC99-3B8231733546',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '順益新竹',
       total_amount: 0,
@@ -357,7 +357,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/3A8B9C53-BF79-424C-B93F-CE629482273D',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '正隆股份有限公司竹北廠',
       total_amount: 11927,
@@ -368,7 +368,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/9EAF40B6-8EDF-4BA6-B5E1-0FF5F0E91ED0',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.廠房鐵皮屋頂
+      category_id: pvCategories.其他
     }, {
       name: '尚閎科技股份有限公司',
       total_amount: 0,
@@ -401,7 +401,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/D89A1754-0777-454C-AB1F-14B5510B8EBA',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '立達三',
       total_amount: 449,
@@ -412,7 +412,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/53193931-3AA0-4C5C-BCBA-A38429EFFD32',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '台灣資生堂股份有限公司新竹工廠',
       total_amount: 33,
@@ -423,7 +423,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/A690CA87-06C1-4F5E-8D7E-B4A1F4AE382C',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.廠房鐵皮屋頂
+      category_id: pvCategories.建築水泥樓面屋頂
     }, {
       name: '頎邦光復廠46.23kW',
       total_amount: 57,
@@ -434,7 +434,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/12C17828-AD2F-488C-91B8-0D8D426F863F',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.廠房鐵皮屋頂
+      category_id: pvCategories.建築水泥樓面屋頂
     }, {
       name: '艾克爾T3 423.32kwp',
       total_amount: 0,
@@ -445,7 +445,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/1D50C814-AEB4-45FE-AD58-DE99A0607E3A',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.廠房鐵皮屋頂
+      category_id: pvCategories.建築水泥樓面屋頂
     }, {
       name: '艾克爾T5 113.24kwp',
       total_amount: 0,
@@ -489,7 +489,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/064AA74C-C3F5-4170-BEAA-DF47EDF66199',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '遠東新世紀股份有限公司(機車棚+宿舍+紡織廠-大停車場)',
       total_amount: 467,
@@ -500,7 +500,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/875586D6-344F-4321-92CB-971E32C81F23',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.其他
+      category_id: pvCategories.地面型系統
     }, {
       name: '陽光屋頂湖口東楊路自用電站',
       total_amount: 2,
@@ -522,7 +522,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/4E830C32-7530-42CD-9588-59349F84CFF9',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.地面型系統
     }, {
       name: '交通部台灣鐵路管理局北湖站',
       total_amount: 22,
@@ -533,7 +533,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/0BB66FFD-DBC8-40BB-8702-065AD9749DEE',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '亞力電機股份有限公司(電材大樓)',
       total_amount: 326,
@@ -621,7 +621,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/F0BCAF85-D1FD-40DD-96BE-3CD3EEBF0361',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.校園屋頂
     }, {
       name: '次震宇宙館',
       total_amount: 8,
@@ -632,7 +632,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/FA76A6B2-D494-4C4C-B795-B51FF247FD04',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '學新館',
       total_amount: 18,
@@ -643,7 +643,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/CCC34754-E097-47E7-997A-1F050DD65D8E',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.校園屋頂
     }, {
       name: '臺北市大安區公所行政中心',
       total_amount: 13,
@@ -665,7 +665,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/05A2D19D-88DC-448B-8530-5F1577381493',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.校園屋頂
     }, {
       name: '大安森林公園',
       total_amount: 25,
@@ -676,7 +676,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/B1C6F573-C4CB-426E-8A92-3B7F1B7FF852',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '中華電信股份有限公司',
       total_amount: 0,
@@ -687,7 +687,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/C5116B9B-99BF-45AA-85AA-923EA387A70F',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '台北市政府產業發展局 南門市場',
       total_amount: 115,
@@ -709,7 +709,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/58E47911-16D4-4FAC-AB87-FD754749D3CA',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '臺北市立萬華國民中學',
       total_amount: 36,
@@ -742,7 +742,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/965FC849-989A-4C41-A42C-2885FDC6D136',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.校園屋頂
     }, {
       name: '玉山博愛',
       total_amount: 14,
@@ -907,7 +907,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/99F493C1-2474-493C-81F2-EC83ECC0B454',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '桃園沙崙案-設備操作室、桃園沙崙案-污水處理廠',
       total_amount: 143,
@@ -929,7 +929,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/B0E33CDD-9AB9-4CAC-BD5A-ED7F761E1F70',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '渣打國際商業銀行股份有限公司(三民分行)',
       total_amount: 0,
@@ -1006,7 +1006,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/217D3CFB-265B-4905-83A2-DE1AC02B2247',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '敏鈞精密屋頂型249.69kWp',
       total_amount: 238,
@@ -1017,7 +1017,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/8AEC6E4E-C0F0-44FE-9205-5E77A7A83792',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '沙崙綠能科技示範場域',
       total_amount: 603,
