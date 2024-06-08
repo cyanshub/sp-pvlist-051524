@@ -2,7 +2,7 @@
 const { Field, Category, Comment, User } = require('../models')
 
 // 載入所需的工具
-const { getOffset, getPagination } = require('../helpers/pagination-helper.js')
+const { getOffset, getPagination } = require('../helpers/pagination-helpers.js')
 const { getFieldsFilter } = require('../helpers/field-filter-helpers.js')
 
 const fieldController = {
