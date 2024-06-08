@@ -15,8 +15,10 @@ const fieldController = {
     const keyword = req.query.keyword ? req.query.keyword.trim() : '' // 取得並修剪關鍵字
 
     return Promise.all([
-      Field.findAll({
+      Field.findAndCountAll({
         raw: true,
+        offset: keyword.length === 0 ? offset : null, // 如果有搜尋則取得所有資料並用 fiter
+        limit: keyword.length === 0 ? limit : null, // 如果有搜尋則取得所有資料並用 fiter
         where: {
           // 展開運算子的優先級較低, 會比較慢判斷
           // 若 categoryId 存在, 則展開 {categoryId}; 若不存在則展開 {}
@@ -31,21 +33,23 @@ const fieldController = {
       .then(([fields, categories]) => {
         const favoritedFieldsId = req.user?.FavoritedFields ? req.user.FavoritedFields.map(fr => fr.id) : []
 
-        // 如果偵測到有輸入關鍵字, 則依其進行 filter
-        if (keyword.length > 0) fields = getFieldsFilter(fields, keyword)
+        let data = fields.rows.map(r => ({
+          ...r,
+          isFavorited: favoritedFieldsId.includes(r.id)
+        }))
 
-        const data = fields
-          .slice(offset, offset + limit) // 對案場進行分頁
-          .map(r => ({
-            ...r,
-            isFavorited: favoritedFieldsId.includes(r.id)
-          }))
+        // 如果偵測到有輸入關鍵字, 則依其進行 filter
+        if (keyword.length > 0) {
+          fields.rows = getFieldsFilter(fields.rows, keyword) // 依關鍵字 keyword 進行 filter
+          fields.count = fields.rows.length // 重新取得搜尋結果的頁碼
+          data = fields.rows.slice(offset, offset + limit) // 對案場進行分頁
+        }
 
         return res.render('fields', {
           fields: data,
           categories,
           categoryId,
-          pagination: getPagination(limit, page, fields.length),
+          pagination: getPagination(limit, page, fields.count),
           isSearched: '/fields', // 決定搜尋表單發送位置為 index 頁面
           keyword
         })
