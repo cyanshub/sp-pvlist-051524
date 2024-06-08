@@ -4,6 +4,7 @@ const { Field, Category, Comment, User } = require('../models')
 // 載入所需的工具
 const { getOffset, getPagination } = require('../helpers/pagination-helpers.js')
 const { getFieldsFilter } = require('../helpers/field-filter-helpers.js')
+const { Op, literal } = require('sequelize') // 引入 sequelize 查詢符、啟用 SQL 語法
 
 const fieldController = {
   getFields: (req, res, next) => {
@@ -17,12 +18,20 @@ const fieldController = {
     return Promise.all([
       Field.findAndCountAll({
         raw: true,
-        offset: keyword.length === 0 ? offset : null, // 如果有搜尋則取得所有資料並用 fiter
-        limit: keyword.length === 0 ? limit : null, // 如果有搜尋則取得所有資料並用 fiter
+        offset,
+        limit,
         where: {
           // 展開運算子的優先級較低, 會比較慢判斷
           // 若 categoryId 存在, 則展開 {categoryId}; 若不存在則展開 {}
-          ...categoryId ? { categoryId } : {}
+          ...categoryId ? { categoryId } : {},
+          ...keyword.length > 0
+            ? {
+                [Op.or]: [
+                  literal(`LOWER(Field.name) LIKE '%${keyword.toLowerCase()}%'`),
+                  literal(`LOWER(Field.full_address) LIKE '%${keyword.toLowerCase()}%'`)
+                ]
+              }
+            : {}
         },
         include: [Category],
         nest: true,
@@ -33,17 +42,10 @@ const fieldController = {
       .then(([fields, categories]) => {
         const favoritedFieldsId = req.user?.FavoritedFields ? req.user.FavoritedFields.map(fr => fr.id) : []
 
-        let data = fields.rows.map(r => ({
+        const data = fields.rows.map(r => ({
           ...r,
           isFavorited: favoritedFieldsId.includes(r.id)
         }))
-
-        // 如果偵測到有輸入關鍵字, 則依其進行 filter
-        if (keyword.length > 0) {
-          fields.rows = getFieldsFilter(fields.rows, keyword) // 依關鍵字 keyword 進行 filter
-          fields.count = fields.rows.length // 重新取得搜尋結果的頁碼
-          data = fields.rows.slice(offset, offset + limit) // 對案場進行分頁
-        }
 
         return res.render('fields', {
           fields: data,

@@ -4,7 +4,7 @@ const { Field, User, Category } = require('../models')
 // 載入所需的工具
 const { getOffset, getPagination } = require('../helpers/pagination-helpers.js')
 const { localFileHandler } = require('../helpers/file-helpers.js')
-const { getFieldsFilter } = require('../helpers/field-filter-helpers.js')
+const { Op, literal } = require('sequelize')
 
 const adminController = {
   // 案場相關
@@ -23,10 +23,22 @@ const adminController = {
 
     return Promise.all([
       Field.findAndCountAll({
-        where: { ...categoryId ? { categoryId } : {} },
+        where: {
+          // 展開運算子的優先級較低, 會比較慢判斷
+          // 若 categoryId 存在, 則展開 {categoryId}; 若不存在則展開 {}
+          ...categoryId ? { categoryId } : {},
+          ...keyword.length > 0
+            ? {
+                [Op.or]: [
+                  literal(`LOWER(Field.name) LIKE '%${keyword.toLowerCase()}%'`),
+                  literal(`LOWER(Field.full_address) LIKE '%${keyword.toLowerCase()}%'`)
+                ]
+              }
+            : {}
+        },
         raw: true,
-        offset: keyword.length === 0 ? offset : null, // 如果有搜尋則取得所有資料並用 fiter
-        limit: keyword.length === 0 ? limit : null, // 如果有搜尋則取得所有資料並用 fiter
+        offset,
+        limit,
         nest: true,
         order: [['id', 'DESC']],
         include: [Category] // 查資料時, 由 include 把有關資料資料一併帶出
@@ -34,14 +46,7 @@ const adminController = {
       Category.findAll({ raw: true })
     ])
       .then(([fields, categories]) => {
-        let data = fields.rows
-
-        // 如果偵測到有輸入關鍵字, 則依其進行 filter
-        if (keyword.length > 0) {
-          fields.rows = getFieldsFilter(fields.rows, keyword) // 依關鍵字 keyword 進行 filter
-          fields.count = fields.rows.length // 重新取得搜尋結果的頁碼
-          data = fields.rows.slice(offset, offset + limit) // 對案場進行分頁
-        }
+        const data = fields.rows
 
         return res.render('admin/fields', {
           fields: data,
