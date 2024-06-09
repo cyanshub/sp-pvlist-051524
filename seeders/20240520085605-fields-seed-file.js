@@ -104,7 +104,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/01CFA0AE-A395-4173-8A48-C18FB09321B5',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '智原科技股份有限公司',
       total_amount: 131,
@@ -555,7 +555,7 @@ module.exports = {
       cover: 'https://www.trec.org.tw/attachment/4C16FA39-DD8E-4493-B9D2-40AFB6BA2ED7',
       created_at: new Date(),
       updated_at: new Date(),
-      category_id: pvCategories.建築水泥樓面屋頂
+      category_id: pvCategories.廠房鐵皮屋頂
     }, {
       name: '臺北市政府消防局寶橋分隊',
       total_amount: 17,
@@ -825,7 +825,7 @@ module.exports = {
       total_amount: 4,
       remain_amount: 4,
       trans_amount: 0,
-      full_address: '臺北市內湖區台北市內湖區陽光街２９２號１樓',
+      full_address: '台北市內湖區陽光街２９２號１樓',
       local: '臺北市內湖區',
       cover: 'https://www.trec.org.tw/attachment/735BB9E4-0E7E-461C-AEFC-C225332A0D94',
       created_at: new Date(),
@@ -898,7 +898,7 @@ module.exports = {
       updated_at: new Date(),
       category_id: pvCategories.建築水泥樓面屋頂
     }, {
-      name: '臺灣水泥股份有限公司台北水泥製品廠桃園分廠"',
+      name: '臺灣水泥股份有限公司台北水泥製品廠桃園分廠',
       total_amount: 582,
       remain_amount: 582,
       trans_amount: 0,
