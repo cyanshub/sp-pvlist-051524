@@ -3,7 +3,7 @@ const { Field, Category, Comment, User } = require('../models')
 
 // 載入所需的工具
 const { getOffset, getPagination } = require('../helpers/pagination-helpers.js')
-const { getFieldsFilter } = require('../helpers/field-filter-helpers.js')
+const { filterKeyword } = require('../helpers/array-helpers.js')
 const { Op, literal } = require('sequelize') // 引入 sequelize 查詢符、啟用 SQL 語法
 
 const fieldController = {
@@ -141,7 +141,7 @@ const fieldController = {
         const keyword = req.query.keyword ? req.query.keyword.trim() : ''
 
         // 如果偵測到有輸入關鍵字, 則依其進行 filter
-        if (keyword.length > 0) fields = getFieldsFilter(fields, keyword)
+        if (keyword.length > 0) fields = filterKeyword(fields, keyword)
 
         // 如果偵測到 categoryId 有輸入數值, 則依其進行 filter
         if (typeof categoryId === 'number') {

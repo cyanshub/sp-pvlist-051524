@@ -6,6 +6,7 @@ const { User, Field, Favorite, Followship, Comment } = require('../models')
 
 // 載入所需工具
 const { localAvatarHandler } = require('../helpers/file-helpers')
+const { filterUnique } = require('../helpers/array-helpers')
 
 const userController = {
   signUpPage: (req, res, next) => {
@@ -204,19 +205,8 @@ const userController = {
         // 整理 user 資料
         user = user.toJSON()
 
-        // 使用 Set 來追蹤已經出現過的 Field.id
-        const seenFieldIds = new Set()
-
-        // 遍歷每個 Comment，清理重複的 Field.id
-        user.Comments = user.Comments.map(comment => {
-          const fieldId = comment.Field.id
-          if (seenFieldIds.has(fieldId)) {
-            return null // 如果 Field.id 已經出現過，將 comment 設為 null
-          } else {
-            seenFieldIds.add(fieldId) // 將 Field.id 加入到 Set 中
-            return comment // 返回原始的 comment
-          }
-        }).filter(Boolean) // 過濾掉為 null 的 comment
+        // 使用重複值過濾演算法: 過濾掉重複的 comment.Field.id
+        user.Comments = filterUnique(user.Comments, ['Field', 'id'])
 
         return res.render('profile', { user })
       })

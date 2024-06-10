@@ -1,5 +1,6 @@
 'use strict'
 const axios = require('axios')
+const { shuffleFisherYates, filterUnique } = require('../helpers/array-helpers')
 const urlMale = 'https://randomuser.me/api/?gender=male&results=50'
 const urlFemale = 'https://randomuser.me/api/?gender=female&results=50'
 
@@ -18,19 +19,13 @@ module.exports = {
       axios.get(urlFemale)
     ])
       .then(([responseMale, responseFemale]) => {
-        const seenPictures = new Set()
-        const results = [...responseMale.data.results, ...responseFemale.data.results]
-          .map(result => { // 過濾掉重複出現的結國
-            const uniquePicture = result.picture.large
-            return seenPictures.has(uniquePicture) ? null : (seenPictures.add(uniquePicture), result)
-          }).filter(Boolean) // 過濾掉為 null 的 result
+        let results = [...responseMale.data.results, ...responseFemale.data.results]
 
-        // Fisher-Yates 洗牌演算法
-        for (let i = results.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [results[i], results[j]] = [results[j], results[i]]
-          console.log(results[i].picture.large)
-        }
+        // 使用重複值過濾演算法: 過濾掉重複的 result.picture.large
+        results = filterUnique(results, ['picture', 'large'])
+
+        // 使用 Fisher-Yates 洗牌演算法
+        results = shuffleFisherYates(results)
         return results
       })
       .catch(err => console.log(err))
