@@ -17,7 +17,7 @@ const routes = require('./routes')
 const handlebarsHelpers = require('./helpers/handlebars-helpers.js')
 
 const app = express()
-const port = process.env.PORT || 3000
+const port = process.env.PORT || 3001
 
 // 註冊與設定使用 handlebars 樣板引擎
 app.engine('hbs', handlebars({ extname: '.hbs', helpers: handlebarsHelpers }))

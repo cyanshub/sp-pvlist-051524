@@ -7,7 +7,7 @@ const localFileHandler = file => {
     if (!file) return resolve(null) // 檢查檔案是否存在
 
     // 在專案建立一個用於保存圖片的資料夾upload, 如果專案根目錄不存在則建立之
-    const uploadAvatarDir = path.join(__dirname, '..', 'upload')
+    const uploadAvatarDir = path.join(__dirname, '../', 'upload')
     if (!fs.existsSync(uploadAvatarDir)) {
       fs.mkdirSync(uploadAvatarDir)
     }

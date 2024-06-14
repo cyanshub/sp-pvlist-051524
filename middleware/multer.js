@@ -4,7 +4,7 @@ const fs = require('fs')
 const path = require('path')
 
 // 建立暫存圖片的資料夾 temp
-const tempDir = path.join(__dirname, 'temp')
+const tempDir = path.join(__dirname, '../', 'temp')
 if (!fs.existsSync(tempDir)) {
   fs.mkdirSync(tempDir)
 }
