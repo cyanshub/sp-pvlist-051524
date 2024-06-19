@@ -31,7 +31,7 @@ router.delete('/following/:userId', authenticated, userController.removeFollowin
 router.get('/users/:id', authenticated, userController.getUser)
 router.get('/users/:id/edit', authenticated, userController.editUser)
 router.put('/users/:id', authenticated, upload.single('avatar'), userController.putUser)
-router.get('/avatars/:userId', authenticated, userController.getAvatar)
+router.put('/avatars/:userId', authenticated, userController.putAvatar)
 
 // 設計路由: 案場相關
 router.get('/fields', authenticated, fieldController.getFields)
