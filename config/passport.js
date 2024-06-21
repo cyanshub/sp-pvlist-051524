@@ -32,6 +32,7 @@ passport.serializeUser((user, cb) => cb(null, user.id))
 passport.deserializeUser((id, cb) => {
   User.findByPk(id, {
     // 關聯 User Model 的多對多關係 Model, 並寫上多對多關係的名稱(對應model設定的名稱)
+    attributes: { exclude: ['password'] }, // 避免密碼外洩
     include: [
       { // 收藏的案場
         model: Field,
@@ -41,12 +42,14 @@ passport.deserializeUser((id, cb) => {
       { // 撈出追蹤自己的人
         model: User,
         as: 'Followers',
-        order: [['createdAt', 'DESC']] // 指定按照 createdAt 字段降序排序
+        order: [['createdAt', 'DESC']], // 指定按照 createdAt 字段降序排序
+        attributes: { exclude: ['password'] } // 避免密碼外洩
       },
       { // 撈出自己追蹤的人
         model: User,
         as: 'Followings',
-        order: [['createdAt', 'DESC']] // 指定按照 createdAt 字段降序排序
+        order: [['createdAt', 'DESC']], // 指定按照 createdAt 字段降序排序
+        attributes: { exclude: ['password'] } // 避免密碼外洩
       }]
   })
     .then(user => cb(null, user.toJSON()))
