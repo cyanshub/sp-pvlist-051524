@@ -7,21 +7,24 @@
       {{!-- 排版搜尋表單、漢堡排 --}}
       <div class="d-flex nowrap">
         {{>field-search-form}}
-        <button class="navbar-toggler" style="position: fixed; right: 0.5rem; top: 0.5rem;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <button id="navbar-toggler" class="navbar-toggler" style="position: fixed; right: 0.5rem; top: 0.5rem;" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
       </div>
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav ms-auto mb-2 mb-md-0">
           {{#if userAuth.isAdmin}}
+          <hr class="toggle-hr d-none my-2" style="width:90%; border: none; border-top: 1px solid #f6f7f8;">
           <li class="nav-item me-1">
             <a href="/admin/fields" class="nav-link text-container">Admin 後台</a>
           </li>
           {{/if}}
+          <hr class="toggle-hr d-none my-2" style="width:90%; border: none; border-top: 1px solid #f6f7f8;">
           <li class="nav-item me-1 d-inline-flex align-items-center">
             <span class="nav-link text-container">Hi, {{ userAuth.name }}</span>
           </li>
           
+          <hr class="toggle-hr d-none my-2" style="width:90%; border: none; border-top: 1px solid #f6f7f8;">
           <li class="nav-item me-1">
             <a href="/users/{{userAuth.id}}">
             {{#if userAuth.avatar}}
@@ -32,9 +35,12 @@
             </a>
           </li>
           
+          <hr class="toggle-hr d-none my-2" style="width:90%; border: none; border-top: 1px solid #f6f7f8;">
           <li class="nav-item me-1">
             <a href="/users/{{userAuth.id}}" class="nav-link text-container">個人頁面</a>
           </li>
+
+          <hr class="toggle-hr d-none my-2" style="width:90%; border: none; border-top: 1px solid #f6f7f8;">
           <li class="nav-item me-1">
             <a href="/logout"><button class="btn btn-outline-secondary my-sm-0 my-2">登出</button></a>
           </li>
@@ -44,3 +50,13 @@
     </div>
   </nav>
 </header>
+
+{{!-- 客製化漢堡排橫條 --}}
+<script>
+  document.getElementById('navbar-toggler').addEventListener('click', function () {
+    const hrElements = document.querySelectorAll('.toggle-hr');
+    hrElements.forEach(function (hr) {
+      hr.classList.toggle('d-none')
+    })
+  })
+</script>
