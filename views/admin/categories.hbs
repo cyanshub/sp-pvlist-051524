@@ -3,7 +3,7 @@
 
   {{>admin-tabs route='categories'}}
   {{!-- 加入新增分類表單 --}}
-  <div class="d-flex align-items-center pt-3 pb-5 my-3 text-white-50 bg-purple">
+  <div class="d-flex align-items-center pt-1 mb-4 text-white-50 bg-purple">
     {{!-- 負責修改分類 --}}
     {{#if category}}
     <form class="row" action="/admin/categories/{{category.id}}?_method=PUT" method="POST">
@@ -17,44 +17,46 @@
     </form>
     {{else}}
     {{!-- 負責新增分類 --}}
-    <form class="row" action="/admin/categories" method="POST">
-      <div class="col-auto">
-        <input class="form-control" type="text" placeholder="請輸入類別名稱" name="name">
-      </div>
-      <div class="col-auto">
+    <form  action="/admin/categories" method="POST">
+      <div class="d-flex ">
+        <input class="form-control me-4" type="text" placeholder="請輸入類別名稱" name="name">
+
         <button class="btn btn-outline-primary" type="submit">Create</button>
       </div>
     </form>
     {{/if}}
   </div>
-  <table class="table align-middle">
-    <thead class="thead-dark">
-      <tr class="table-dark">
-        <th scope="col">序號</th>
-        <th scope="col">類別名稱</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each categories}}
-      <tr>
-        <th scope="row">{{this.id}}</th>
-        <td>{{this.name}}</td>
-        <td>
-          <button type="button" class="btn btn-link">
-            <a class="btn btn-link btn-color" style="text-decoration: none;" href="/admin/categories/{{this.id}}">
-              Edit
-            </a>
-          </button>
-          <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-            <button type="submit" class="btn btn-link link-secondary"
-              onclick="return confirm(`確定要刪除{{this.name}}嗎?`)" style="text-decoration: none;">Delete</button>
-          </form>
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
+
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead class="thead-dark">
+        <tr class="table-dark">
+          <th scope="col">序號</th>
+          <th scope="col">類別名稱</th>
+          <th class="text-center" scope="col">功能</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each categories}}
+        <tr>
+          <th scope="row">{{this.id}}</th>
+          <td>{{this.name}}</td>
+          <td>
+            <button type="button" class="btn btn-link">
+              <a class="btn btn-link btn-color" style="text-decoration: none;" href="/admin/categories/{{this.id}}">
+                Edit
+              </a>
+            </button>
+            <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-link link-secondary"
+                onclick="return confirm(`確定要刪除{{this.name}}嗎?`)" style="text-decoration: none;">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
   <br />
   <br />
 

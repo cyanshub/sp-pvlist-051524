@@ -19,36 +19,38 @@
 
   <br/>
 
-  <table class="table align-middle">
-    <thead class="thead-dark">
-      <tr class="table-dark">
-        <th scope="col">序號</th>
-        <th scope="col">案場名稱</th>
-        <th scope="col">案場類別</th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each fields}}
-      <tr>
-        <th scope="row">{{this.id}}</th>
-        <td><a href="/admin/fields/{{this.id}}">{{this.name}}</a></td>
-        <td>{{this.Category.name}}</td>
-        <td>
-          <button type="button" class="btn btn-link">
-            <a class="btn btn-link btn-color" href="/admin/fields/{{this.id}}/edit" style="text-decoration: none;">
-              Edit
-            </a>
-          </button>
-          <form action="/admin/fields/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-            <button type="submit" class="btn btn-link link-secondary"
-              onclick="return confirm(`確定要刪除{{this.name}}嗎?`)" style="text-decoration: none;">Delete</button>
-          </form>
-        </td>
-      </tr>
-      {{/each}}
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead class="thead-dark">
+        <tr class="table-dark">
+          <th scope="col">序號</th>
+          <th scope="col">案場名稱</th>
+          <th scope="col">案場類別</th>
+          <th class="text-center" scope="col">功能</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each fields}}
+        <tr>
+          <th scope="row">{{this.id}}</th>
+          <td><a href="/admin/fields/{{this.id}}">{{this.name}}</a></td>
+          <td>{{this.Category.name}}</td>
+          <td>
+            <button type="button" class="btn btn-link">
+              <a class="btn btn-link btn-color" href="/admin/fields/{{this.id}}/edit" style="text-decoration: none;">
+                Edit
+              </a>
+            </button>
+            <form action="/admin/fields/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+              <button type="submit" class="btn btn-link link-secondary"
+                onclick="return confirm(`確定要刪除{{this.name}}嗎?`)" style="text-decoration: none;">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
 
   {{!-- 取得資料總數, 顯示全部資料的按鈕 --}}
   <p class="small btn-color">

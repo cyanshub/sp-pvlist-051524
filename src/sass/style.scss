@@ -63,6 +63,14 @@ a {
   /* 添加陰影效果 */
 }
 
+.table-responsive {
+  table {
+    min-width: 750px;
+  }
+
+  overflow-x: auto;
+}
+
 
 // 複寫 bootstrap 樣式
 a.nav-link {
