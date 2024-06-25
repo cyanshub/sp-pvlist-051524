@@ -1,23 +1,28 @@
-{{> field-tabs route='topUsers'}}
-<h1 style="display: inline;">太陽光電達人</h1>
-<span style="display: inline;"><small>依追蹤人數列出前10名用戶</small></span>
-<hr />
-<div class="row" style="text-align: center;">
-  {{#each users}}
-  <div class="col-sm-6 col-md-3 mb-3">
-    <a href="/users/{{this.id}}">
-      {{#if this.avatar}}
-      <img src="{{this.avatar}}" width="140px" height="140px" style="transition: opacity 0.5s; opacity:0;"
-        onload="this.style.opacity=1;" />
-      {{else}}
-      {{!-- 如果沒有上傳頭像 --}}
-      <img src="https://fakeimg.pl/140/" width="140px" height="140px" />
-      {{/if}}
-    </a>
-    <h3 class="mb-0">{{this.name}}</h3>
-    <div class="bg-secondary badge mt-0">追蹤人數：{{this.followerCounts}}</div>
-    {{!-- 追蹤按鈕 --}}
-    <div class="mt-1 mb-2">{{> user-follow-button}}</div>
+{{!-- 控制編距樣式 --}}
+<div class="margin-wrapper">
+
+  {{> field-tabs route='topUsers'}}
+  <h1 style="display: inline;">太陽光電達人</h1>
+  <span style="display: inline;"><small>依追蹤人數列出前10名用戶</small></span>
+  <hr />
+  <div class="row" style="text-align: center;">
+    {{#each users}}
+    <div class="col-sm-6 col-md-3 mb-3">
+      <a href="/users/{{this.id}}">
+        {{#if this.avatar}}
+        <img src="{{this.avatar}}" width="140px" height="140px" style="transition: opacity 0.5s; opacity:0;"
+          onload="this.style.opacity=1;" />
+        {{else}}
+        {{!-- 如果沒有上傳頭像 --}}
+        <img src="https://fakeimg.pl/140/" width="140px" height="140px" />
+        {{/if}}
+      </a>
+      <h3 class="mb-0">{{this.name}}</h3>
+      <div class="bg-secondary badge mt-0">追蹤人數：{{this.followerCounts}}</div>
+      {{!-- 追蹤按鈕 --}}
+      <div class="mt-1 mb-2">{{> user-follow-button}}</div>
+    </div>
+    {{/each}}
   </div>
-  {{/each}}
+
 </div>

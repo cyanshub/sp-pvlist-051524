@@ -1,59 +1,70 @@
-{{!-- 餐廳後台 --}}
-{{> admin-tabs route = 'fields'}}
+{{!-- 控制編距樣式 --}}
+<div class="margin-wrapper">
 
-{{!-- 加上 categories 分類 --}}
-<ul class="nav nav-pills">
-  <li class="nav-item">
-    <a class="nav-link {{#ifCond '' categoryId}}active{{/ifCond}}" href="?categoryId=">全部</a>
-  </li>
-  {{#each categories}}
-  <li class="nav-item">
-    <a class="nav-link {{#ifCond this.id ../categoryId}}active{{/ifCond}}"
-      href="?categoryId={{this.id}}">{{this.name}}</a>
-  </li>
-  {{/each}}
-</ul>
+  {{!-- 餐廳後台 --}}
+  {{> admin-tabs route = 'fields'}}
 
-<a href='/admin/fields/create'>
-  <button type="button" class="btn btn-outline-primary mt-4">新增案場</button>
-</a>
-<br />
-<br />
-<table class="table align-middle">
-  <thead class="thead-dark">
-    <tr class="table-dark">
-      <th scope="col">序號</th>
-      <th scope="col">案場名稱</th>
-      <th scope="col">案場類別</th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each fields}}
-    <tr>
-      <th scope="row">{{this.id}}</th>
-      <td>{{this.name}}</td>
-      <td>{{this.Category.name}}</td>
-      <td>
-        <button type="button" class="btn btn-link">
-          <a class="btn btn-link link-primary" href="/admin/fields/{{this.id}}">
-            Show
-          </a>
-        </button>
-        <button type="button" class="btn btn-link">
-          <a class="btn btn-link link-primary" href="/admin/fields/{{this.id}}/edit">
-            Edit
-          </a>
-        </button>
-        <form action="/admin/fields/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
-          <button type="submit" class="btn btn-link link-danger"
-            onclick="return confirm(`確定要刪除{{this.name}}嗎?`)">Delete</button>
-        </form>
-      </td>
-    </tr>
+  {{!-- 加上 categories 分類 --}}
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link {{#ifCond '' categoryId}}active{{/ifCond}}" href="?categoryId=">全部</a>
+    </li>
+    {{#each categories}}
+    <li class="nav-item">
+      <a class="nav-link {{#ifCond this.id ../categoryId}}active{{/ifCond}}"
+        href="?categoryId={{this.id}}">{{this.name}}</a>
+    </li>
     {{/each}}
-  </tbody>
-</table>
+  </ul>
 
-{{!-- 加上 pagination 分頁器 --}}
-{{>pagination}}
+  <br/>
+
+  <table class="table align-middle">
+    <thead class="thead-dark">
+      <tr class="table-dark">
+        <th scope="col">序號</th>
+        <th scope="col">案場名稱</th>
+        <th scope="col">案場類別</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each fields}}
+      <tr>
+        <th scope="row">{{this.id}}</th>
+        <td><a href="/admin/fields/{{this.id}}">{{this.name}}</a></td>
+        <td>{{this.Category.name}}</td>
+        <td>
+          <button type="button" class="btn btn-link">
+            <a class="btn btn-link btn-color" href="/admin/fields/{{this.id}}/edit" style="text-decoration: none;">
+              Edit
+            </a>
+          </button>
+          <form action="/admin/fields/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+            <button type="submit" class="btn btn-link link-secondary"
+              onclick="return confirm(`確定要刪除{{this.name}}嗎?`)" style="text-decoration: none;">Delete</button>
+          </form>
+        </td>
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+
+  {{!-- 取得資料總數, 顯示全部資料的按鈕 --}}
+  <p class="small btn-color">
+    {{> pagination-toggle color = 'btn-color'}}
+
+    <span>
+       <a class="ms-3 btn-color" href='/admin/fields/create'>
+          新增案場
+      </a>
+    </span>
+  </p>
+
+  
+    
+
+  {{!-- 加上 pagination 分頁器 --}}
+  {{>pagination}}
+
+</div>

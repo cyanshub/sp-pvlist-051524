@@ -11,7 +11,21 @@
           <input type="hidden" name="categoryId" value="{{categoryId}}"/>
 
           {{!-- 發送搜尋關鍵字 --}}
-          <input type="text" id="search-input" class="form-control" name="keyword" value="{{keyword}}" placeholder="請輸入案場名稱或地點" aria-label="Field Name">
+          <input type="text" id="search-input" class="form-control" name="keyword" value="{{keyword}}" 
+          {{#if find}}
+          {{else}}
+          placeholder="輸入關鍵字" aria-label="輸入關鍵字"         
+          {{/if}}
+          
+          {{#ifCond find 'fields'}}
+          placeholder="輸入案場名稱、地址" aria-label="案場名稱、地址"         
+          {{/ifCond}}
+
+          {{#ifCond find 'users'}}
+          placeholder="輸入使用者名稱、帳號" aria-label="使用者名稱、帳號"         
+          {{/ifCond}}
+          
+          aria-label="Field Name">
           <button id="search-button" class="btn btn-outline-light" type="submit">
             <i class="fas fa-search"></i>
           </button>

@@ -53,7 +53,8 @@ const fieldController = {
           categoryId,
           pagination: getPagination(limit, page, fields.count),
           isSearched: '/fields', // 決定搜尋表單發送位置為 index 頁面
-          keyword
+          keyword,
+          find: 'fields'
         })
       })
       .catch(err => next(err))
@@ -158,7 +159,8 @@ const fieldController = {
           categoryId,
           pagination: getPagination(limit, page, fields.length),
           isSearched: '/fields/favorites', // 決定搜尋表單發送位置為 favorites頁面
-          keyword
+          keyword,
+          find: 'fields'
         })
       })
       .catch(err => next(err))

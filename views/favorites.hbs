@@ -1,45 +1,50 @@
-{{!-- 實作頁籤 --}}
-{{> field-tabs route = "favorites"}}
+{{!-- 控制編距樣式 --}}
+<div class="margin-wrapper">
 
-{{!-- 加上 categories 分類 --}}
-<ul class="nav nav-pills">
-  <li class="nav-item">
-    <a class="nav-link {{#ifCond '' categoryId}}active{{/ifCond}}" href="?categoryId=">全部</a>
-  </li>
-  {{#each categories}}
-  <li class="nav-item">
-    <a class="nav-link {{#ifCond this.id ../categoryId}}active{{/ifCond}}"
-      href="?categoryId={{this.id}}">{{this.name}}</a>
-  </li>
-  {{/each}}
-</ul>
+  {{!-- 實作頁籤 --}}
+  {{> field-tabs route = "favorites"}}
 
-{{!-- 案場列表 --}}
-<div class="row mt-3">
-  {{#each fields}}
-  <div class="col-md-3">
-    <div class="card mb-4 shadow-sm">
-      <a href="/fields/{{this.id}}">
-        <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
-          style="transition: opacity 0.5s; opacity:0; width:286px; height:180px; object-fit:cover;"
-          onload="this.style.opacity=1;">
-      </a>
-      <div class="card-body">
-        <p class="card-text">
-          <div class="mt-0 text-container">
-            <a href="/fields/{{this.id}}"><strong>{{this.name}}</strong></a>
-            {{!-- 有別於首頁, 顯示更細節的資訊 --}}   
-            <p class="mb-0">綠電憑證累積量: {{formatNumber this.totalAmount}} 張</p>
-            <p class="mb-0">綠電憑證交易量: {{formatNumber this.transAmount}} 張</p>
-            <p class="mb-0 text-container">{{this.fullAddress}}</p>
-          </div>
-        </p>
+  {{!-- 加上 categories 分類 --}}
+  <ul class="nav nav-pills">
+    <li class="nav-item">
+      <a class="nav-link {{#ifCond '' categoryId}}active{{/ifCond}}" href="?categoryId=">全部</a>
+    </li>
+    {{#each categories}}
+    <li class="nav-item">
+      <a class="nav-link {{#ifCond this.id ../categoryId}}active{{/ifCond}}"
+        href="?categoryId={{this.id}}">{{this.name}}</a>
+    </li>
+    {{/each}}
+  </ul>
 
+  {{!-- 案場列表 --}}
+  <div class="row mt-3">
+    {{#each fields}}
+    <div class="col-md-3">
+      <div class="card mb-4 shadow-sm">
+        <a href="/fields/{{this.id}}">
+          <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
+            style="transition: opacity 0.5s; opacity:0; width:100%; height:180px; object-fit:cover;"
+            onload="this.style.opacity=1;">
+        </a>
+        <div class="card-body">
+          <p class="card-text">
+            <div class="mt-0 text-container">
+              <a href="/fields/{{this.id}}"><strong>{{this.name}}</strong></a>
+              {{!-- 有別於首頁, 顯示更細節的資訊 --}}   
+              <p class="mb-0">綠電憑證累積量: {{formatNumber this.totalAmount}} 張</p>
+              <p class="mb-0">綠電憑證交易量: {{formatNumber this.transAmount}} 張</p>
+              <p class="mb-0 text-container">{{this.fullAddress}}</p>
+            </div>
+          </p>
+
+        </div>
       </div>
     </div>
+    {{/each}}
   </div>
-  {{/each}}
-</div>
 
-{{!-- 加上 pagination 分頁器 --}}
-{{>pagination}}
+  {{!-- 加上 pagination 分頁器 --}}
+  {{>pagination}}
+
+</div>

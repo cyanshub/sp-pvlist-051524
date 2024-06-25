@@ -1,5 +1,3 @@
-@charset "UTF-8";
-@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700|Open+Sans:400,300,600);
 .form-signup,
 .form-signin {
   width: 40%;
@@ -115,73 +113,4 @@
   .form-signin {
     margin-top: 6rem;
   }
-}
-* {
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "open sans", helvetica, arial, sans;
-  background: no-repeat center center fixed;
-  background-size: cover;
-}
-
-.btn-color {
-  color: #1fb5bf;
-}
-
-a {
-  text-decoration: none;
-  color: #2a2a2a;
-}
-
-.text-container {
-  color: #2a2a2a;
-  white-space: nowrap; /* 防止文字換行 */
-  overflow: hidden; /* 隱藏超出容器的文字 */
-  text-overflow: ellipsis; /* 使用省略號表示超出的部分 */
-}
-
-.image-container {
-  overflow: hidden; /* 隱藏溢出部分 */
-}
-
-.image-container img {
-  -o-object-fit: cover;
-     object-fit: cover; /* 保持原始比例，填滿容器 */
-}
-
-.margin-wrapper {
-  margin-top: 0;
-  margin-bottom: 0;
-  margin-left: 3rem;
-  margin-right: 3rem;
-}
-
-a.nav-link {
-  color: #495057 !important;
-}
-
-a.nav-link.text-container {
-  color: rgba(255, 255, 255, 0.5490196078) !important;
-}
-
-a.nav-link.active {
-  color: #1fb5bf !important;
-  background-color: #FFFFFF !important;
-}
-
-a.page-link {
-  color: #1fb5bf !important;
-}
-
-li.page-item.active {
-  color: #fff !important;
-  background-color: #1fb5bf !important;
-  border-color: #1fb5bf !important;
-}
-li.page-item.active a.page-link {
-  color: #fff !important;
-  background-color: #1fb5bf !important;
-  border-color: #1fb5bf !important;
-}/*# sourceMappingURL=style.css.map */
+}/*# sourceMappingURL=index.css.map */

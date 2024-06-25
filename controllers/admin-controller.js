@@ -54,7 +54,9 @@ const adminController = {
           categoryId,
           pagination: getPagination(limit, page, fields.count),
           isSearched: '/admin/fields', // 決定搜尋表單發送位置為後台 index 頁面
-          keyword
+          keyword,
+          find: 'fields',
+          count: fields.count // 用於 pagination-toggle
         })
       })
       .catch(err => next(err))
@@ -156,11 +158,41 @@ const adminController = {
 
   // 使用者相關
   getUsers: (req, res, next) => {
-    return User.findAll({
+    const DEFAULT_LIMIT = 10
+    const page = Number(req.query.page) || 1
+    const limit = Number(req.query.limit) || DEFAULT_LIMIT
+    const offset = getOffset(limit, page)
+    const keyword = req.query.keyword ? req.query.keyword.trim() : '' // 取得並修剪關鍵字
+    const whereClause = {
+      ...keyword.length > 0
+        ? {
+            [Op.or]: [
+              literal(`LOWER(User.name) LIKE '%${keyword.toLowerCase()}%'`),
+              literal(`LOWER(User.email) LIKE '%${keyword.toLowerCase()}%'`)
+            ]
+          }
+        : {}
+
+    }
+
+    return User.findAndCountAll({
+      offset,
+      limit,
+      where: whereClause,
       raw: true,
       attributes: { exclude: ['password'] }
     })
-      .then(users => res.render('admin/users', { users }))
+      .then(users => {
+        const data = users.rows
+        res.render('admin/users', {
+          users: data,
+          pagination: getPagination(limit, page, users.count),
+          isSearched: '/admin/users', // 決定搜尋表單發送位置
+          keyword,
+          find: 'users',
+          count: users.count // 用於 pagination-toggle
+        })
+      })
       .catch(err => next(err))
   },
   patchUser: (req, res, next) => {

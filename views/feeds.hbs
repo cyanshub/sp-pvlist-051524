@@ -1,68 +1,73 @@
-{{> field-tabs route='feeds'}}
-<h1>最新動態</h1>
-<hr />
-<div class="row mt-5">
+{{!-- 控制編距樣式 --}}
+<div class="margin-wrapper">
 
-  {{!-- 案場區 --}}
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header">
-        最新案場
-      </div>
-      <div class="card-body">
-        {{#each fields}}
-        <div>
-          <h4>
-            <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
-            <div>
-              <a href="/fields?categoryId={{this.Category.id}}" style="text-decoration:none; color: black">
-                <small class="fs-6">[{{this.Category.name}}]</small>
-              </a>
-            </div>
-          </h4>
-          <a href="/fields/{{this.id}}">
-            <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
-              style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
-          </a>
-          <span class="small mb-0">累積綠電憑證數量: {{formatNumber this.totalAmount}} 張</span>, 
-          {{relativeTimeFromNow this.createdAt}}
-          <hr>
+  {{> field-tabs route='feeds'}}
+  <h1>最新動態</h1>
+  <hr />
+  <div class="row mt-5">
+
+    {{!-- 案場區 --}}
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          最新案場
         </div>
-        {{/each}}
-      </div>
-    </div>
-  </div>
-
-  {{!-- 評論區 --}}
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header">
-        最新評論
-      </div>
-      <div class="card-body">
-        {{#each comments}}
-        <div>
-          <h4>
-            <a class="link-primary" href="/fields/{{this.Field.id}}"
-              style="text-decoration:none;">{{this.Field.name}}</a>
-          </h4>
-          <div class="row">
-            <div class="col">
-              <a href="/fields/{{this.Field.id}}">
-                <img class="img-fluid" src="{{this.Field.cover}}" alt="Card image cap"
-                  style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
-              </a>
-            </div>
-            <div class="col">
-              <p class="my-4" style="white-space: break-spaces;">{{this.text}}</p>
-              - <a class="link-secondary" href="/users/{{this.User.id}}">{{this.User.name}}</a>
-              <small>at {{relativeTimeFromNow this.createdAt}}</small>
-            </div>
+        <div class="card-body">
+          {{#each fields}}
+          <div>
+            <h4>
+              <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
+              <div>
+                <a href="/fields?categoryId={{this.Category.id}}" style="text-decoration:none; color: black">
+                  <small class="fs-6">[{{this.Category.name}}]</small>
+                </a>
+              </div>
+            </h4>
+            <a href="/fields/{{this.id}}">
+              <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
+                style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+            </a>
+            <span class="small mb-0">累積綠電憑證數量: {{formatNumber this.totalAmount}} 張</span>, 
+            {{relativeTimeFromNow this.createdAt}}
+            <hr>
           </div>
-          <hr>
+          {{/each}}
         </div>
-        {{/each}}
+      </div>
+    </div>
+
+    {{!-- 評論區 --}}
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          最新評論
+        </div>
+        <div class="card-body">
+          {{#each comments}}
+          <div>
+            <h4>
+              <a class="link-primary" href="/fields/{{this.Field.id}}"
+                style="text-decoration:none;">{{this.Field.name}}</a>
+            </h4>
+            <div class="row">
+              <div class="col">
+                <a href="/fields/{{this.Field.id}}">
+                  <img class="img-fluid" src="{{this.Field.cover}}" alt="Card image cap"
+                    style="transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+                </a>
+              </div>
+              <div class="col">
+                <p class="my-4" style="white-space: break-spaces;">{{this.text}}</p>
+                - <a class="link-secondary" href="/users/{{this.User.id}}">{{this.User.name}}</a>
+                <small>at {{relativeTimeFromNow this.createdAt}}</small>
+              </div>
+            </div>
+            <hr>
+          </div>
+          {{/each}}
+        </div>
       </div>
     </div>
   </div>
+
 </div>

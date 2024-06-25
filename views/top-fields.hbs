@@ -1,98 +1,100 @@
-{{> field-tabs route='topFields'}}
-<h1>TOP10 人氣案場</h1>
-<hr />
-<div class="row mt-5">
+{{!-- 控制編距樣式 --}}
+<div class="margin-wrapper">
 
-  {{!-- 收藏數前10名案場 --}}
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header">
-        依收藏數排序前10名案場
-      </div>
-      <div class="card-body">
-        {{#each fieldsFC}}
-        <div>
+  {{> field-tabs route='topFields'}}
+  <h1>TOP10 人氣案場</h1>
+  <hr />
+  <div class="row mt-5">
 
-          
-          <div class="row">
-            {{!-- 案場圖片 --}}
-            <div class="col-6 image-container">
-              <a href="/fields/{{this.id}}">
-                <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
-                  style="height:240px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
-              </a>
-            </div>
-
-            {{!-- 案場資訊 --}}
-            <div class="col-6">
-              <h4>
-                <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
-              </h4>
-              <span class="bg-info badge my-3">追蹤人數：{{this.favoriteCounts}}</span>
-              <ul class="list-unstyled">
-                <li><strong>累積張數: </strong>{{formatNumber this.totalAmount}} 張</li>
-                <li><strong>交易張數: </strong>{{formatNumber this.transAmount}} 張</li>
-                <div class="text-container">{{this.fullAddress}}</div>
-
-                {{!-- 加入收藏功能 --}}
-                {{!-- 加入是否收藏的條件判斷式 --}}
-                <div>{{> field-favorite-button}}</div>
-              </ul>
-            </div>
-          </div>
-          <hr>
+    {{!-- 收藏數前10名案場 --}}
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          依收藏數排序前10名案場
         </div>
-        {{/each}}
+        <div class="card-body">
+          {{#each fieldsFC}}
+          <div>
+
+            
+            <div class="row">
+              {{!-- 案場圖片 --}}
+              <div class="col-6 image-container">
+                <a href="/fields/{{this.id}}">
+                  <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
+                    style="height:300px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+                </a>
+              </div>
+
+              {{!-- 案場資訊 --}}
+              <div class="col-6">
+                <h4>
+                  <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
+                </h4>
+                <span class="bg-info badge my-3">追蹤人數：{{this.favoriteCounts}}</span>
+                <ul class="list-unstyled">
+                  <li><strong>累積張數: </strong>{{formatNumber this.totalAmount}} 張</li>
+                  <li><strong>交易張數: </strong>{{formatNumber this.transAmount}} 張</li>
+                  <div class="text-container">{{this.fullAddress}}</div>
+
+                  {{!-- 加入收藏功能 --}}
+                  {{!-- 加入是否收藏的條件判斷式 --}}
+                  <div>{{> field-favorite-button}}</div>
+                </ul>
+              </div>
+            </div>
+            <hr>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+
+
+    {{!-- 留言數前10名案場 --}}
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          依留言數排序前10名案場
+        </div>
+        <div class="card-body">
+          {{#each fieldsCC}}
+          <div>
+    
+    
+            <div class="row">
+              {{!-- 案場圖片 --}}
+              <div class="col-6 image-container">
+                <a href="/fields/{{this.id}}">
+                  <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
+                    style="height:300px; width: 100%; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
+                </a>
+              </div>
+    
+              {{!-- 案場資訊 --}}
+              <div class="col-6">
+                <h4>
+                  <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
+                </h4>
+                <span class="bg-info badge my-3">留言次數：{{this.commentCounts}}</span>
+                <ul class="list-unstyled">
+                  <li><strong>累積張數: </strong>{{formatNumber this.totalAmount}} 張</li>
+                  <li><strong>交易張數: </strong>{{formatNumber this.transAmount}} 張</li>
+                  <div class="text-container">{{this.fullAddress}}</div>
+
+                  {{!-- 加入收藏功能 --}}
+                  {{!-- 加入是否收藏的條件判斷式 --}}
+                  <div>{{> field-favorite-button}}</div>
+                </ul>
+              </div>
+            </div>
+            <hr>
+          </div>
+          {{/each}}
+        </div>
       </div>
     </div>
   </div>
-
-
-
-  {{!-- 留言數前10名案場 --}}
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-header">
-        依留言數排序前10名案場
-      </div>
-      <div class="card-body">
-        {{#each fieldsCC}}
-        <div>
-  
-  
-          <div class="row">
-            {{!-- 案場圖片 --}}
-            <div class="col-6 image-container">
-              <a href="/fields/{{this.id}}">
-                <img class="card-img-top img-fluid" src="{{this.cover}}" alt="Card image cap"
-                  style="height:240px; width: 270px; transition: opacity 0.5s; opacity:0;" onload="this.style.opacity=1;">
-              </a>
-            </div>
-  
-            {{!-- 案場資訊 --}}
-            <div class="col-6">
-              <h4>
-                <a class="link-primary" href="/fields/{{this.id}}" style="text-decoration:none;">{{this.name}}</a>
-              </h4>
-              <span class="bg-info badge my-3">留言次數：{{this.commentCounts}}</span>
-              <ul class="list-unstyled">
-                <li><strong>累積張數: </strong>{{formatNumber this.totalAmount}} 張</li>
-                <li><strong>交易張數: </strong>{{formatNumber this.transAmount}} 張</li>
-                <div class="text-container">{{this.fullAddress}}</div>
-
-                {{!-- 加入收藏功能 --}}
-                {{!-- 加入是否收藏的條件判斷式 --}}
-                <div>{{> field-favorite-button}}</div>
-              </ul>
-            </div>
-          </div>
-          <hr>
-        </div>
-        {{/each}}
-      </div>
-    </div>
-  </div>
-
-
 
 </div>
