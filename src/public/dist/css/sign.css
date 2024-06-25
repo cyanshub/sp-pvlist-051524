@@ -29,7 +29,7 @@
 .form-signup h2,
 .form-signin h2 {
   width: 100%;
-  color: #5fdde5;
+  color: rgba(0, 106, 245, 0.8);
   font-family: "open sans condensed";
   font-size: 1.5em;
   display: block;
@@ -62,8 +62,8 @@
 .form-signup .btn,
 .form-signin .btn {
   display: block;
-  background: #1fb5bf;
-  border: 1px solid #1ba0a9;
+  background: rgba(0, 62, 143, 0.8);
+  border: 1px solid rgba(0, 51, 118, 0.8);
   padding: 0.5em 2em;
   color: white;
   margin-right: 0.5em;
@@ -72,11 +72,11 @@
 }
 .form-signup .btn:hover,
 .form-signin .btn:hover {
-  background: #23cad5;
+  background: rgba(0, 73, 169, 0.8);
 }
 .form-signup .btn:active,
 .form-signin .btn:active {
-  background: #1fb5bf;
+  background: rgba(0, 62, 143, 0.8);
   box-shadow: inset 0px 1px 1px fadeout(black, 90%);
 }
 .form-signup .btn:focus,
@@ -92,7 +92,7 @@
 }
 .form-signup .sign a,
 .form-signin .sign a {
-  color: #33d3de;
+  color: rgba(0, 84, 194, 0.8);
   line-height: 0.9em;
   text-decoration: none;
   font-size: 0.9em;
@@ -101,11 +101,11 @@
 }
 .form-signup .sign a:hover,
 .form-signin .sign a:hover {
-  color: #1ba0a9;
+  color: rgba(0, 51, 118, 0.8);
 }
 .form-signup .sign a:active,
 .form-signin .sign a:active {
-  background: #1fb5bf;
+  background: rgba(0, 62, 143, 0.8);
   box-shadow: inset 0px 1px 1px fadeout(black, 90%);
 }
 

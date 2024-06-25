@@ -31,7 +31,7 @@
 .form-signup h2,
 .form-signin h2 {
   width: 100%;
-  color: #5fdde5;
+  color: rgba(0, 106, 245, 0.8);
   font-family: "open sans condensed";
   font-size: 1.5em;
   display: block;
@@ -64,8 +64,8 @@
 .form-signup .btn,
 .form-signin .btn {
   display: block;
-  background: #1fb5bf;
-  border: 1px solid #1ba0a9;
+  background: rgba(0, 62, 143, 0.8);
+  border: 1px solid rgba(0, 51, 118, 0.8);
   padding: 0.5em 2em;
   color: white;
   margin-right: 0.5em;
@@ -74,11 +74,11 @@
 }
 .form-signup .btn:hover,
 .form-signin .btn:hover {
-  background: #23cad5;
+  background: rgba(0, 73, 169, 0.8);
 }
 .form-signup .btn:active,
 .form-signin .btn:active {
-  background: #1fb5bf;
+  background: rgba(0, 62, 143, 0.8);
   box-shadow: inset 0px 1px 1px fadeout(black, 90%);
 }
 .form-signup .btn:focus,
@@ -94,7 +94,7 @@
 }
 .form-signup .sign a,
 .form-signin .sign a {
-  color: #33d3de;
+  color: rgba(0, 84, 194, 0.8);
   line-height: 0.9em;
   text-decoration: none;
   font-size: 0.9em;
@@ -103,11 +103,11 @@
 }
 .form-signup .sign a:hover,
 .form-signin .sign a:hover {
-  color: #1ba0a9;
+  color: rgba(0, 51, 118, 0.8);
 }
 .form-signup .sign a:active,
 .form-signin .sign a:active {
-  background: #1fb5bf;
+  background: rgba(0, 62, 143, 0.8);
   box-shadow: inset 0px 1px 1px fadeout(black, 90%);
 }
 
@@ -127,7 +127,7 @@ body {
 }
 
 .btn-color {
-  color: #1fb5bf;
+  color: rgba(0, 62, 143, 0.8);
 }
 
 a {
@@ -158,6 +158,20 @@ a {
   margin-right: 3rem;
 }
 
+#successAlert,
+#errorAlert,
+#warningAlert {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 1050;
+  /* 使其位於較高層級，避免被其他元素遮蔽 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* 添加陰影效果 */
+}
+
 a.nav-link {
   color: #495057 !important;
 }
@@ -167,21 +181,25 @@ a.nav-link.text-container {
 }
 
 a.nav-link.active {
-  color: #1fb5bf !important;
+  color: rgba(0, 62, 143, 0.8) !important;
   background-color: #FFFFFF !important;
 }
 
 a.page-link {
-  color: #1fb5bf !important;
+  color: rgba(0, 62, 143, 0.8) !important;
 }
 
 li.page-item.active {
   color: #fff !important;
-  background-color: #1fb5bf !important;
-  border-color: #1fb5bf !important;
+  background-color: rgba(0, 62, 143, 0.8) !important;
+  border-color: rgba(0, 62, 143, 0.8) !important;
 }
 li.page-item.active a.page-link {
   color: #fff !important;
-  background-color: #1fb5bf !important;
-  border-color: #1fb5bf !important;
+  background-color: rgba(0, 62, 143, 0.8) !important;
+  border-color: rgba(0, 62, 143, 0.8) !important;
+}
+
+table thead tr th {
+  background: rgba(0, 51, 118, 0.8) !important;
 }/*# sourceMappingURL=style.css.map */
