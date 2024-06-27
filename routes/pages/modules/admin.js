@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 // 載入 middleware: 負責上傳圖片
-const upload = require('../../middleware/multer.js')
+const upload = require('../../../middleware/multer.js')
 
 // 載入 controller
-const adminController = require('../../controllers/admin-controller.js')
+const adminController = require('../../../controllers/pages/admin-controller.js')
 
 // 設計路由
 // 設計路由: 案場相關

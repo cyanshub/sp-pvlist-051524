@@ -1,9 +1,9 @@
 // 引入資料表 model
-const { Field, User, Category } = require('../models')
+const { Field, User, Category } = require('../../models/index.js')
 
 // 載入所需的工具
-const { getOffset, getPagination } = require('../helpers/pagination-helpers.js')
-const { localFileHandler } = require('../helpers/file-helpers.js')
+const { getOffset, getPagination } = require('../../helpers/pagination-helpers.js')
+const { localFileHandler } = require('../../helpers/file-helpers.js')
 const { Op, literal } = require('sequelize')
 
 const adminController = {

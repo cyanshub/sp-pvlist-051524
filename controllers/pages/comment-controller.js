@@ -1,5 +1,5 @@
 // 引入需要操作資料表的 Model
-const { Comment, User, Field } = require('../models')
+const { Comment, User, Field } = require('../../models')
 
 const commentController = {
   postComment: (req, res, next) => {

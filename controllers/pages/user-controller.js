@@ -2,11 +2,11 @@
 const bcrypt = require('bcryptjs')
 
 // 載入所需 model
-const { User, Field, Favorite, Followship, Comment } = require('../models')
+const { User, Field, Favorite, Followship, Comment } = require('../../models')
 
 // 載入所需工具
-const { localAvatarHandler } = require('../helpers/file-helpers')
-const { filterUnique } = require('../helpers/array-helpers')
+const { localAvatarHandler } = require('../../helpers/file-helpers')
+const { filterUnique } = require('../../helpers/array-helpers')
 
 const userController = {
   signUpPage: (req, res, next) => {
@@ -52,7 +52,7 @@ const userController = {
     const fieldId = req.params.fieldId
     return Promise.all([
       Field.findByPk(fieldId, {
-      // 取出關聯 model, 更新收藏數
+        // 取出關聯 model, 更新收藏數
         include: [{ model: User, as: 'FavoritedUsers', attributes: { exclude: ['password'] } }]
       }),
       Favorite.findOne({
@@ -66,7 +66,7 @@ const userController = {
         if (!field) throw new Error('該案場不存在!')
         if (favorite) throw new Error('已收藏過此案場!') // 檢查若能在join table 找到對應關係代表已經收藏過
         field.update({
-        // 新增收藏時, 追蹤數 + 1
+          // 新增收藏時, 追蹤數 + 1
           favoriteCounts: field.FavoritedUsers.length + 1
         })
         return Favorite.create({
@@ -85,7 +85,7 @@ const userController = {
     const fieldId = req.params.fieldId
     return Promise.all([
       Field.findByPk(fieldId, {
-      // 取出關聯 model, 更新收藏數
+        // 取出關聯 model, 更新收藏數
         include: [{ model: User, as: 'FavoritedUsers', attributes: { exclude: ['password'] } }]
       }),
       Favorite.findOne({
@@ -99,7 +99,7 @@ const userController = {
         if (!field) throw new Error('該案場不存在!')
         if (!favorite) throw new Error('並未收藏此案場!')
         field.update({
-        // 移除收藏時, 追蹤數 - 1
+          // 移除收藏時, 追蹤數 - 1
           favoriteCounts: field.FavoritedUsers.length < 1 ? 0 : field.FavoritedUsers.length - 1 // 防護機制
         })
         return favorite.destroy()
@@ -224,7 +224,7 @@ const userController = {
       .catch(err => next(err))
   },
   putUser: (req, res, next) => {
-  // 使用者只能編輯自己的資料: 比對傳入的id 與 passport的id
+    // 使用者只能編輯自己的資料: 比對傳入的id 與 passport的id
     if (Number(req.params.id) !== req.user.id) throw new Error('只能編輯自己的使用者資料!')
     const { name } = req.body
     if (!name.trim()) throw new Error('需要輸入使用者名稱!')
@@ -236,7 +236,7 @@ const userController = {
       localAvatarHandler(file) // 將圖案寫入指定資料夾, 並回傳圖檔路徑
     ])
       .then(([user, filePath]) => {
-      // 檢查使用者是否存在
+        // 檢查使用者是否存在
         if (!user) throw new Error('使用者不存在!')
         return user.update({
           name,

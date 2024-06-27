@@ -13,7 +13,7 @@ const session = require('express-session')
 const passport = require('./config/passport.js')
 const { getUser } = require('./helpers/auth-helpers.js')
 
-const routes = require('./routes')
+const { pages, apis } = require('./routes')
 const handlebarsHelpers = require('./helpers/handlebars-helpers.js')
 
 const app = express()
@@ -46,7 +46,9 @@ app.use((req, res, next) => {
   next()
 })
 
-app.use(routes)
+// middleware: 路由匯整器
+app.use('/admin', apis)
+app.use(pages)
 
 app.listen(port, () => {
   console.info(`Pvlist application listening on port: http://localhost:${port}`)
