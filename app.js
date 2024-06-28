@@ -47,7 +47,7 @@ app.use((req, res, next) => {
 })
 
 // middleware: 路由匯整器
-app.use('/admin', apis)
+app.use('/apis', apis)
 app.use(pages)
 
 app.listen(port, () => {
