@@ -1,39 +1,44 @@
-<div class="row">
-  <div class="col-md-12">
-    <h1>{{field.name}}</h1>
-    <p>[{{field.Category.name}}]</p>
-  </div>
-    <hr>
-  <div class="col col-lg-6">
-    <img class="img-responsive center-block" src="{{field.cover}}"
-      style="width:auto; max-width: 390px; margin-bottom: 1rem; transition: opacity 0.5s; opacity:0;"
-      onload="this.style.opacity=1;">
-    <br>
-    {{!-- 預留 Dash board 按鈕 --}}
-    <a href="/fields/{{field.id}}" class="btn btn-outline-dark mb-3 me-3">
-      Back</a>
+{{!-- 控制編距樣式 --}}
+<div class="margin-wrapper">
 
-    {{!-- 加入收藏按鈕 --}}
-    {{#if isFavorited }}
-    <form action="/favorite/{{field.id}}?_method=DELETE" method="POST" style="display: contents;">
-      <button type="submit" class="btn btn-outline-danger mb-3 me-3">移除最愛</button>
-    </form>
-    {{else}}
-    <form action="/favorite/{{field.id}}" method="POST" style="display: contents;">
-      <button type="submit" class="btn btn-outline-primary mb-3 me-3">加到最愛</button>
-    </form>
-    {{/if}}
-  </div>
-  <div class="col-12 col-lg-6">
-    <h5><strong>統計資訊</strong></h5>
-    <ul class="list-unstyled">
-      <li><strong>累積張數: </strong>{{formatNumber field.totalAmount}} 張</li>
-      <li><strong>交易張數: </strong>{{formatNumber field.transAmount}} 張</li>
-      <li><strong>剩餘張數: </strong>{{formatNumber field.remainAmount}} 張</li>
-      <li><strong>瀏覽次數: </strong>{{formatNumber field.viewCounts}} 次</li>
-      <li><strong>評論次數: </strong>{{formatNumber field.commentCounts}} 則</li>
-      <li><strong>收藏次數: </strong>{{formatNumber field.favoriteCounts}} 位</li>
-    </ul>
-  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>{{field.name}}</h1>
+      <p>[{{field.Category.name}}]</p>
+    </div>
+      <hr>
+    <div class="col col-lg-6">
+      <img class="img-responsive center-block" src="{{field.cover}}"
+        style="width:auto; max-width: 390px; margin-bottom: 1rem; transition: opacity 0.5s; opacity:0;"
+        onload="this.style.opacity=1;">
+      <br>
+      {{!-- 預留 Dash board 按鈕 --}}
+      <a href="/fields/{{field.id}}" class="btn btn-outline-dark mb-3 me-3">
+        Back</a>
 
+      {{!-- 加入收藏按鈕 --}}
+      {{#if isFavorited }}
+      <form action="/favorite/{{field.id}}?_method=DELETE" method="POST" style="display: contents;">
+        <button type="submit" class="btn btn-outline-danger mb-3 me-3">移除最愛</button>
+      </form>
+      {{else}}
+      <form action="/favorite/{{field.id}}" method="POST" style="display: contents;">
+        <button type="submit" class="btn btn-outline-primary mb-3 me-3">加到最愛</button>
+      </form>
+      {{/if}}
+    </div>
+    <div class="col-12 col-lg-6">
+      <h5><strong>統計資訊</strong></h5>
+      <ul class="list-unstyled">
+        <li><strong>累積張數: </strong>{{formatNumber field.totalAmount}} 張</li>
+        <li><strong>交易張數: </strong>{{formatNumber field.transAmount}} 張</li>
+        <li><strong>剩餘張數: </strong>{{formatNumber field.remainAmount}} 張</li>
+        <li><strong>瀏覽次數: </strong>{{formatNumber field.viewCounts}} 次</li>
+        <li><strong>評論次數: </strong>{{formatNumber field.commentCounts}} 則</li>
+        <li><strong>收藏次數: </strong>{{formatNumber field.favoriteCounts}} 位</li>
+      </ul>
+    </div>
+
+  </div>
+  
 </div>

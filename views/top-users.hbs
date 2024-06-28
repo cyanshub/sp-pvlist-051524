@@ -20,7 +20,7 @@
       <h3 class="mb-0">{{this.name}}</h3>
       <div class="bg-secondary badge mt-0">追蹤人數：{{this.followerCounts}}</div>
       {{!-- 追蹤按鈕 --}}
-      <div class="mt-1 mb-2">{{> user-follow-button}}</div>
+      <div class="mt-1 mb-2">{{> user-follow-button userId = this.id userIsFollowed = this.isFollowed }}</div>
     </div>
     {{/each}}
   </div>
