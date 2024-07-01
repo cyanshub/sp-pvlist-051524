@@ -1,7 +1,7 @@
 # PVList
 - PVList 是一個用於查詢已登記再生能源憑證的太陽光電案場的網站, 使用者可查看不同案場的再生能源憑證數量, 也可以收藏熱門案場或追蹤其他活躍的使用者。
 
-- 本專案旨在練習 Sequelize 資料庫的基本操作（Create、Read、Update、Delete）, 以及實作使用者登入與驗證機制。本專案以MVC架構的模式整理程式碼, 將路由包裝進routes資料夾, 並由每條路由呼叫對應的controller。
+- 本專案旨在練習 Sequelize 資料庫的基本操作（Create、Read、Update、Delete）, 以及實作使用者登入與驗證機制。本專案以MVC架構的模式整理程式碼, 將路由包裝進routes資料夾, 並由每條路由呼叫對應的controller。另外，本專案同時存在 web API的形式, 作為後端開發的練習, 以 passport-jwt 執行本地登入策略, 以 jsonwebtoken 簽發使用者驗證憑證。
 
 ## 專案描述
 此專案包含以下功能：
@@ -82,3 +82,7 @@
 - **sinon: ^11.1.2**  : 提供獨立的測試替身（stubs）、模擬（mocks）和間諜（spies）功能, 用於驗證程式碼行為的測試工具。
 
 - **supertest: ^6.1.6**  : 超級代理（super-agent）驅動的函式庫, 用於測試 Node.js HTTP 伺服器, 提供高階的 HTTP 斷言功能。
+
+- **passport-jwt: ^4.0.0**  : 一個 Passport.js 的策略 (strategy)，用於基於 JWT 進行身份驗證。Passport 是一個在 Node.js 中用於認證的中間件，支持多種認證策略。。
+
+- **jsonwebtoken: ^8.5.1**  : 用來生成、簽發和驗證 JSON Web Token 的套件。JWT 是一種緊湊且獨立的方式，用於在各方之間作為 JSON 對象安全地傳輸信息。

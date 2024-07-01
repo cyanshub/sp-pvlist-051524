@@ -6,8 +6,9 @@ const jwt = require('jsonwebtoken')
 
 const userController = {
   signUp: (req, res, next) => {
-    userServices.signUp(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+    return userServices.signUp(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   },
+
   signIn: (req, res, next) => {
     // 利用 try catch 處理不是非同步語法的錯誤事件
     try {
@@ -30,8 +31,37 @@ const userController = {
       next(err)
     }
   },
+
+  addFavorite: (req, res, next) => {
+    return userServices.addFavorite(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+
+  removeFavorite: (req, res, next) => {
+    userServices.removeFavorite(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+
+  getTopUsers: (req, res, next) => {
+    return userServices.getTopUsers(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+
+  addFollowing: (req, res, next) => {
+    return userServices.addFollowing(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+
+  removeFollowing: (req, res, next) => {
+    return userServices.removeFollowing(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+
+  getUser: (req, res, next) => {
+    return userServices.getUser(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+
   putUser: (req, res, next) => {
-    userServices.putUser(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+    return userServices.putUser(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
+  },
+
+  putAvatar: (req, res, next) => {
+    return userServices.putAvatar(req, (err, data) => err ? next(err) : res.json({ status: 'success', data }))
   }
 }
 
