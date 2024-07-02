@@ -31,7 +31,7 @@
 .form-signup h2,
 .form-signin h2 {
   width: 100%;
-  color: rgba(0, 106, 245, 0.8);
+  color: rgba(19, 160, 130, 0.8);
   font-family: "open sans condensed";
   font-size: 1.5em;
   display: block;
@@ -64,8 +64,8 @@
 .form-signup .btn,
 .form-signin .btn {
   display: block;
-  background: rgba(0, 62, 143, 0.8);
-  border: 1px solid rgba(0, 51, 118, 0.8);
+  background: rgba(8, 69, 56, 0.8);
+  border: 1px solid rgba(5, 46, 37, 0.8);
   padding: 0.5em 2em;
   color: white;
   margin-right: 0.5em;
@@ -74,11 +74,11 @@
 }
 .form-signup .btn:hover,
 .form-signin .btn:hover {
-  background: rgba(0, 73, 169, 0.8);
+  background: rgba(11, 92, 75, 0.8);
 }
 .form-signup .btn:active,
 .form-signin .btn:active {
-  background: rgba(0, 62, 143, 0.8);
+  background: rgba(8, 69, 56, 0.8);
   box-shadow: inset 0px 1px 1px fadeout(black, 90%);
 }
 .form-signup .btn:focus,
@@ -94,7 +94,7 @@
 }
 .form-signup .sign a,
 .form-signin .sign a {
-  color: rgba(0, 84, 194, 0.8);
+  color: rgba(13, 115, 93, 0.8);
   line-height: 0.9em;
   text-decoration: none;
   font-size: 0.9em;
@@ -103,11 +103,11 @@
 }
 .form-signup .sign a:hover,
 .form-signin .sign a:hover {
-  color: rgba(0, 51, 118, 0.8);
+  color: rgba(5, 46, 37, 0.8);
 }
 .form-signup .sign a:active,
 .form-signin .sign a:active {
-  background: rgba(0, 62, 143, 0.8);
+  background: rgba(8, 69, 56, 0.8);
   box-shadow: inset 0px 1px 1px fadeout(black, 90%);
 }
 
@@ -127,7 +127,7 @@ body {
 }
 
 .btn-color {
-  color: rgba(0, 62, 143, 0.8);
+  color: rgba(8, 69, 56, 0.8);
 }
 
 a {
@@ -188,25 +188,25 @@ a.nav-link.text-container {
 }
 
 a.nav-link.active {
-  color: rgba(0, 62, 143, 0.8) !important;
+  color: rgba(8, 69, 56, 0.8) !important;
   background-color: #FFFFFF !important;
 }
 
 a.page-link {
-  color: rgba(0, 62, 143, 0.8) !important;
+  color: rgba(8, 69, 56, 0.8) !important;
 }
 
 li.page-item.active {
   color: #fff !important;
-  background-color: rgba(0, 62, 143, 0.8) !important;
-  border-color: rgba(0, 62, 143, 0.8) !important;
+  background-color: rgba(8, 69, 56, 0.8) !important;
+  border-color: rgba(8, 69, 56, 0.8) !important;
 }
 li.page-item.active a.page-link {
   color: #fff !important;
-  background-color: rgba(0, 62, 143, 0.8) !important;
-  border-color: rgba(0, 62, 143, 0.8) !important;
+  background-color: rgba(8, 69, 56, 0.8) !important;
+  border-color: rgba(8, 69, 56, 0.8) !important;
 }
 
 table thead tr th {
-  background: rgba(0, 51, 118, 0.8) !important;
+  background: rgba(5, 46, 37, 0.8) !important;
 }/*# sourceMappingURL=style.css.map */

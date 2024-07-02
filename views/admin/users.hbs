@@ -4,7 +4,13 @@
   {{!-- 餐廳後台 --}}
   {{> admin-tabs route = 'users'}}
 
+
   <div class="table-responsive">
+      {{!-- 取得資料總數, 顯示全部資料的按鈕 --}}
+      <p class="small btn-color">
+        {{> pagination-toggle color = 'btn-color'}}
+      </p>
+
     <table class="table align-middle mt-4">
       <thead class="thead-dark">
         <tr class="table-dark">
@@ -50,11 +56,6 @@
       </tbody>
     </table>
   </div>
-
-  {{!-- 取得資料總數, 顯示全部資料的按鈕 --}}
-  <p class="small btn-color">
-    {{> pagination-toggle color = 'btn-color'}}
-  </p>
 
   {{!-- 加上 pagination 分頁器 --}}
   {{>pagination}}

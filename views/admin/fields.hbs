@@ -20,6 +20,17 @@
   <br/>
 
   <div class="table-responsive">
+    {{!-- 取得資料總數, 顯示全部資料的按鈕 --}}
+    <p class="small btn-color">
+      {{> pagination-toggle color = 'btn-color'}}
+    
+      <span>
+        <a class="ms-3 btn-color" href='/admin/fields/create'>
+          新增案場
+        </a>
+      </span>
+    </p>
+
     <table class="table align-middle">
       <thead class="thead-dark">
         <tr class="table-dark">
@@ -52,19 +63,6 @@
     </table>
   </div>
 
-  {{!-- 取得資料總數, 顯示全部資料的按鈕 --}}
-  <p class="small btn-color">
-    {{> pagination-toggle color = 'btn-color'}}
-
-    <span>
-       <a class="ms-3 btn-color" href='/admin/fields/create'>
-          新增案場
-      </a>
-    </span>
-  </p>
-
-  
-    
 
   {{!-- 加上 pagination 分頁器 --}}
   {{>pagination}}
