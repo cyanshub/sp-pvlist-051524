@@ -17,12 +17,18 @@ const upload = require('../../middleware/multer.js') // 負責上傳圖片
 // 設計路由: 後台區域
 router.use('/admin', authenticatedAdmin, admin)
 
-// 設計路由: 使用者相關
+// 設計路由: 使用者登入相關
 router.get('/signup', userController.signUpPage)
 router.post('/signup', userController.signUp)
 router.get('/signin', userController.signInPage)
 router.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signIn) // 直接使用passport提供的方法進行登入驗證
 router.get('/logout', userController.logOut)
+
+// 設計路由: OAuth2 登入相關
+router.get('/oauth2/login/facebook', userController.facebookSignInPage) // Facebook 登入
+router.get('/oauth2/redirect/facebook', userController.facebookSignIn) // Facebook 驗證回調
+
+// 設計路由: 使用者相關
 router.post('/favorite/:fieldId', authenticated, userController.addFavorite)
 router.delete('/favorite/:fieldId', authenticated, userController.removeFavorite)
 router.get('/users/top', authenticated, userController.getTopUsers)

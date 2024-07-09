@@ -41,6 +41,12 @@ const userController = {
   logOut: (req, cb) => {
     return cb(null)
   },
+  facebookSignInPage: (req, cb) => {
+    return cb(null)
+  },
+  facebookSignIn: (req, cb) => {
+    return cb(null)
+  },
   addFavorite: (req, cb) => {
     const userId = req.user.id
     const fieldId = req.params.fieldId

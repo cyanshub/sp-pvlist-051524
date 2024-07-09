@@ -1,6 +1,9 @@
 // 抽取共用的 services 層
 const userServices = require('../../services/user-services')
 
+// 載入所需工具
+const passport = require('../../config/passport')
+
 const userController = {
   signUpPage: (req, res, next) => {
     return res.render('signup')
@@ -23,6 +26,29 @@ const userController = {
     req.flash('success_messages', '登出成功!')
     req.logout()
     res.redirect('/signin')
+  },
+  facebookSignInPage: (req, res, next) => {
+    passport.authenticate('facebook', { scope: ['email'] })(req, res, next)
+  },
+  facebookSignIn: (req, res, next) => {
+    passport.authenticate('facebook', (err, user, info) => {
+      if (err) {
+        console.error('Error authenticating with Facebook:', err)
+        return res.status(500).send('Error authenticating with Facebook')
+      }
+      if (!user) {
+        req.flash('error_messages', '登入失敗，請再試一次')
+        return res.redirect('/signin')
+      }
+      req.logIn(user, err => {
+        if (err) {
+          console.error('Error logging in user:', err)
+          return res.status(500).send('Error logging in user')
+        }
+        req.flash('success_messages', '登入成功!')
+        return res.redirect('/fields')
+      })
+    })(req, res, next)
   },
   addFavorite: (req, res, next) => {
     return userServices.addFavorite(req, (err, data) => {

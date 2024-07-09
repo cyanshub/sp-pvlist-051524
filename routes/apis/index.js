@@ -17,9 +17,11 @@ const upload = require('../../middleware/multer.js') // 負責上傳圖片
 // 設計路由: 後台區域
 router.use('/admin', authenticated, authenticatedAdmin, admin)
 
-// 設計路由: 使用者相關
+// 設計路由: 使用者登入相關
 router.post('/signup', userController.signUp)
 router.post('/signin', passport.authenticate('local', { session: false }), userController.signIn)
+
+// 設計路由: 使用者相關
 router.post('/favorite/:fieldId', authenticated, userController.addFavorite)
 router.delete('/favorite/:fieldId', authenticated, userController.removeFavorite)
 router.get('/users/top', authenticated, userController.getTopUsers)
