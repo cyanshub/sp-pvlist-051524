@@ -6,7 +6,7 @@ const passport = require('../../config/passport')
 
 const userController = {
   signUpPage: (req, res, next) => {
-    return res.render('signup')
+    return res.render('users/signup')
   },
   signUp: (req, res, next) => {
     return userServices.signUp(req, (err, data) => {
@@ -16,7 +16,7 @@ const userController = {
     })
   },
   signInPage: (req, res, next) => {
-    return res.render('signin')
+    return res.render('users/signin')
   },
   signIn: (req, res, next) => {
     req.flash('success_messages', '登入成功!')
@@ -65,7 +65,7 @@ const userController = {
     })
   },
   getTopUsers: (req, res, next) => {
-    return userServices.getTopUsers(req, (err, data) => err ? next(err) : res.render('top-users', data)
+    return userServices.getTopUsers(req, (err, data) => err ? next(err) : res.render('users/top-users', data)
     )
   },
   addFollowing: (req, res, next) => {
@@ -83,10 +83,10 @@ const userController = {
     })
   },
   getUser: (req, res, next) => {
-    return userServices.getUser(req, (err, data) => err ? next(err) : res.render('profile', data))
+    return userServices.getUser(req, (err, data) => err ? next(err) : res.render('users/profile', data))
   },
   editUser: (req, res, next) => {
-    return userServices.editUser(req, (err, data) => err ? next(err) : res.render('edit-user', data))
+    return userServices.editUser(req, (err, data) => err ? next(err) : res.render('users/edit-user', data))
   },
   putUser: (req, res, next) => {
     return userServices.putUser(req, (err, data) => {
