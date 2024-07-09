@@ -47,6 +47,12 @@ const userController = {
   facebookSignIn: (req, cb) => {
     return cb(null)
   },
+  googleSignInPage: (req, cb) => {
+    return cb(null)
+  },
+  googleSignIn: (req, cb) => {
+    return cb(null)
+  },
   addFavorite: (req, cb) => {
     const userId = req.user.id
     const fieldId = req.params.fieldId

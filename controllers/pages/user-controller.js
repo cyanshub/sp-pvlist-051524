@@ -50,6 +50,29 @@ const userController = {
       })
     })(req, res, next)
   },
+  googleSignInPage: (req, res, next) => {
+    passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next)
+  },
+  googleSignIn: (req, res, next) => {
+    passport.authenticate('google', (err, user, info) => {
+      if (err) {
+        console.error('Error authenticating with Google:', err)
+        return res.status(500).send('Error authenticating with Google')
+      }
+      if (!user) {
+        req.flash('error_messages', '登入失敗，請再試一次')
+        return res.redirect('/signin')
+      }
+      req.logIn(user, err => {
+        if (err) {
+          console.error('Error logging in user:', err)
+          return res.status(500).send('Error logging in user')
+        }
+        req.flash('success_messages', '登入成功!')
+        return res.redirect('/fields')
+      })
+    })(req, res, next)
+  },
   addFavorite: (req, res, next) => {
     return userServices.addFavorite(req, (err, data) => {
       if (err) return next(err)
