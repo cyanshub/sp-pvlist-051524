@@ -1,90 +1,79 @@
-# PVList
-- PVList 是一個用於查詢已登記再生能源憑證的太陽光電案場的網站, 使用者可查看不同案場的再生能源憑證數量, 也可以收藏熱門案場或追蹤其他活躍的使用者。
+# Pvlist
+![導覽圖片](public/readme/introduce.png)
 
-- 本專案旨在練習 Sequelize 資料庫的基本操作（Create、Read、Update、Delete）, 以及實作使用者登入與驗證機制。本專案以MVC架構的模式整理程式碼, 將路由包裝進routes資料夾, 並由每條路由呼叫對應的controller。另外，本專案同時存在 web API的形式, 作為後端開發的練習, 以 passport-jwt 執行本地登入策略, 以 jsonwebtoken 簽發使用者驗證憑證。
+## 介紹
++ 這是一個查詢已登記再生能源憑證的太陽光電案場的網站
++ 使用者可查看不同案場的再生能源憑證數量
++ 也可以收藏熱門案場或追蹤其他活躍的使用者
++ 本專案亦具備 web API 的形式, 經取得 token 後可進行操作
 
-## 專案描述
-此專案包含以下功能：
-- 創建、讀取、更新和刪除太陽光電案場資料
-- 使用 Handlebars 作為模板引擎
-- 實作動態式頁碼器
-- 使用關聯式資料庫管理系統進行專案開發, 透過 Sequelize ORM 框架進行資料庫操作
-- 使用者可以透過本專案註冊系統進行登入與驗證
-- 使用者可以透過 Facebook Login 直接登入 (實作 Facebook OAuth 2 功能)
-- 使用者還可透過 Google Login 直接登入 (實作 Google OAuth 2 功能)
+### 功能
++ 具有使用者驗證管理系統, 實作登入、登出功能
++ 為簡化註冊流程, 提升安全性, 亦提供 Google、Facebook 等第三方 OAuth 登入功能
++ 可針對太陽光電案場資料, 進行建立、查看、編輯、刪除等資料操作
++ 提供搜尋功能、動態頁碼、案場收藏功能、使用者追蹤功能、案場評論功能、分類功能
++ 可上傳圖片, 包括使用者頭像、案場封面照片
 
-## 目錄結構
-```markdown
-.
-├── app.js
-├── config
-├── controllers
-├── models
-├── public
-├── routes
-├── seeders
-├── tests
-├── views
-└── README.md
-```
+### 頁面介紹
++ **首頁:** 可以瀏覽所有登錄在本網站的太陽光電案場、收藏案場或移除收藏
++ **單一案場頁面:** 包括案場基本資訊、所有評論, 並可留下評論; 可進一步點選 dashboard, 查看有關案場的統計資訊
++ **個人頁面:** 可查看個人基本資訊、評論過的案場、訂閱使用者、粉絲帳戶; 可進一步修改使用者資訊(含移除頭像)
++ **最新動態頁面:** 顯示最新的10筆案場與評論
++ **收藏案場頁面:** 顯示使用者收藏的全部案場
++ **人氣案場頁面:** 分別依收藏數及留言數顯示前10名案場
++ **綠電憑證先鋒頁面:** 分別依慮電憑證累積總量、交易總量、庫存總量顯示前10名案場
++ **光電達人頁面:** 依追蹤人數由高至低顯示本站使用者, 並可追蹤使用者
++ **具 Admin 權限者:** 可從後台頁面管理所有案場、使用者、案場類別
 
-## 安裝
-1. 確保已安裝 Node.js（版本 ^14.x）。
-2. 克隆此專案到本地端：
-   ```sh
-   git clone https://github.com/your-username/pvlist.git
 
-3. 進入專案目錄並安裝相依套件：
-   ```sh
-   cd pvlist
-   npm install
 
-4. 配置環境變數：在專案根目錄建立 .env 文件, 並設置必要的環境變數, 例如：
-   - DB_HOST=localhost
-   - DB_USER=root
-   - DB_PASS=password
-   - DB_NAME=pvlist
-   - SESSION_SECRET=your_secret_key
+## 開始使用
++ 請在本機安裝 Node.js 與 npm 套件管理系統
++ 本專案採用 Node.js v14.16.0 進行開發, 請確認版本的一致性
++ 複製專案到本機: Bash 指令 git clone https://github.com/your-username/sp-pvlist-051524.git
++ 進入專案資料夾: Bash 指令 cd sp-pvlist-051524
++ 安裝套件: Bash 指令 npm install
++ 確認套件齊全(可參考下方開發工具)
++ 建立.env檔案並填入相關資料(可參考.env example檔案)
++ 設定MySQL資料庫: username、password、database 與專案 config/config.json 中的 development 相同
++ 建立資料庫資料表: Bash 指令 npx sequelize db:migrate
++ 建立種子資料: Bash 指令 npx sequelize db:seed:all
++ 啟動專案: Bash 指令 npm run start; 或使用 nodemon 進行開發, Bash 指令 npm run dev
++ 看到以下訊息，可至瀏覽器輸入下列網址開啟 Pvlist application listening on port: http://localhost:3001
 
-## 主要相依套件
-- **express: ^4.17.1**
-  : 快速、輕量級的 Node.js 網絡應用框架, 提供強大的功能來建立各種 Web 和移動應用程式。
 
-- **sequelize: ^6.6.5**
-  : 基於 Promise 的 Node.js ORM（物件關聯映射）, 支援多種資料庫, 如 MySQL、PostgreSQL、SQLite 和 MSSQL。
 
-- **mysql2: ^2.3.0**
-  : 高效的 MySQL 客戶端, 支援 Node.js, 提供更快的查詢執行和更好的性能。
+## 主要技術
+- [Nodemailer](https://nodemailer.com/)
+- [Facebook OAuth 2.0](https://developers.facebook.com/)
+- [Google OAuth 2.0](https://developers.google.com/?hl=zh-tw)
+- [MySQL](https://www.mysql.com/)
+- [Sequelize](https://sequelize.org/)
+- [Handlebars](https://handlebarsjs.com/)
+- [Express](https://expressjs.com/)
+- [Node.js](https://nodejs.org/)
 
-- **bcryptjs: ^2.4.3**
-  : 基於 JavaScript 的密碼散列函式, 主要用於加密和驗證使用者密碼。
 
-- **passport: ^0.4.1**
-  :  Node.js 認證中介軟體, 用於處理使用者身份驗證, 支援多種驗證策略。
-
-- **jsonwebtoken: ^8.5.1**
-  : 用於生成和驗證 JSON Web Tokens (JWT), 常用於 API 認證和授權。
-
-- **dotenv: ^10.0.0**
-  : 零依賴的模組, 能將環境變數從 `.env` 文件載入 `process.env` 中, 方便配置應用程式的設定。
-
-- **mocha: ^9.1.1**
-  : 功能強大且靈活的 JavaScript 測試框架, 支援瀏覽器和 Node.js 環境。
-
-- **chai: ^4.3.4**
-  : 與 Mocha 一起使用的斷言庫, 提供多種斷言風格（如 BDD 和 TDD）, 使測試更具可讀性。
 
 ## 開發工具
-- **nodemon: ^2.0.12**  : 用於開發 Node.js 應用程式的工具, 能在檔案變更時自動重新啟動伺服器, 提升開發效率。
++ axios: 1.7.2
++ bcryptjs: 2.4.3
++ connect-flash: 0.1.1
++ dayjs: 1.10.6
++ dotenv: 10.0.0
++ express: 4.17.1
++ express-handlebars: 5.3.3
++ express-session: 1.17.2
++ faker: 5.5.3
++ jsonwebtoken: 8.5.1
++ method-override: 3.0.0
++ multer: 1.4.3
++ mysql2: 2.3.0
++ passport: 0.4.1
++ passport-facebook: 3.0.0
++ passport-google-oauth20: 2.0.0
++ passport-jwt: 4.0.0
++ passport-local: 1.0.0
++ sequelize: 6.6.5
++ sequelize-cli: 6.2.0
 
-- **eslint: ^7.32.0**  :  JavaScript 靜態程式碼分析工具, 用於檢查程式碼中的問題, 並提供修復建議, 確保程式碼品質。
-
-- **sequelize-mock: ^0.10.2**  : 用於模擬 Sequelize 模型和方法的測試工具, 使得在單元測試中不依賴真實資料庫。
-
-- **sinon: ^11.1.2**  : 提供獨立的測試替身（stubs）、模擬（mocks）和間諜（spies）功能, 用於驗證程式碼行為的測試工具。
-
-- **supertest: ^6.1.6**  : 超級代理（super-agent）驅動的函式庫, 用於測試 Node.js HTTP 伺服器, 提供高階的 HTTP 斷言功能。
-
-- **passport-jwt: ^4.0.0**  : 一個 Passport.js 的策略 (strategy)，用於基於 JWT 進行身份驗證。Passport 是一個在 Node.js 中用於認證的中間件，支持多種認證策略。。
-
-- **jsonwebtoken: ^8.5.1**  : 用來生成、簽發和驗證 JSON Web Token 的套件。JWT 是一種緊湊且獨立的方式，用於在各方之間作為 JSON 對象安全地傳輸信息。
