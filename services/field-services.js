@@ -28,6 +28,10 @@ const fieldController = {
         : {}
     }
 
+    // 關聯出使用者收藏的案場
+    const userAuthId = req.user.id
+    const includeClause = [{ model: Field, as: 'FavoritedFields' }]
+
     return Promise.all([
       Field.findAndCountAll({
         raw: true,
@@ -38,10 +42,13 @@ const fieldController = {
         nest: true,
         order: [['id', 'DESC']]
       }),
-      Category.findAll({ raw: true })
+      Category.findAll({ raw: true }),
+      User.findByPk(userAuthId, {
+        include: includeClause
+      })
     ])
-      .then(([fields, categories]) => {
-        const favoritedFieldsId = req.user?.FavoritedFields ? req.user.FavoritedFields.map(fr => fr.id) : []
+      .then(([fields, categories, userAuth]) => {
+        const favoritedFieldsId = userAuth?.FavoritedFields ? userAuth.FavoritedFields.map(fr => fr.id) : []
 
         const data = fields.rows.map(r => ({
           ...r,
@@ -129,15 +136,28 @@ const fieldController = {
       .catch(err => cb(err))
   },
   getFavorites: (req, cb) => {
+    const userAuthId = req.user.id
     const DEFAULT_LIMIT = 12 // 預設每頁顯示幾筆資料
     const categoryId = Number(req.query.categoryId) || ''
     const page = Number(req.query.page) || 1 // 預設第一頁或從query string拿資料
     const limit = Number(req.query.limit) || DEFAULT_LIMIT // 預設每頁顯示資料數或從query string拿資料
     const offset = getOffset(limit, page)
-    return Category.findAll({ raw: true })
-      .then(categories => {
+    return Promise.all([
+      Category.findAll({ raw: true }),
+      User.findByPk(userAuthId, {
+        include: [
+          { // 收藏的案場
+            model: Field,
+            as: 'FavoritedFields',
+            order: [['createdAt', 'DESC']] // 指定按照 createdAt 字段降序排序
+          }]
+      })
+    ])
+      .then(([categories, userAuth]) => {
+        userAuth = userAuth.toJSON()
+
         // 取得使用者收藏案場
-        let fields = req.user.FavoritedFields || []
+        let fields = userAuth.FavoritedFields || []
 
         // 取得並修剪關鍵字
         const keyword = req.query.keyword ? req.query.keyword.trim() : ''
@@ -199,6 +219,9 @@ const fieldController = {
       .catch(err => cb(err))
   },
   getTopFields: (req, cb) => {
+    // 關聯出使用者收藏的案場
+    const userAuthId = req.user.id
+    const includeClause = [{ model: Field, as: 'FavoritedFields' }]
     return Promise.all([
       Field.findAll({
         order: [['favoriteCounts', 'DESC'], ['id', 'DESC']],
@@ -209,14 +232,17 @@ const fieldController = {
         order: [['commentCounts', 'DESC'], ['id', 'DESC']],
         limit: 10,
         raw: true
+      }),
+      User.findByPk(userAuthId, {
+        include: includeClause
       })
     ])
-      .then(([fieldsFC, fieldsCC]) => {
+      .then(([fieldsFC, fieldsCC, userAuth]) => {
         if (!fieldsFC) throw new Error('案場不存在!')
         if (!fieldsCC) throw new Error('案場不存在!')
 
         // 判別查詢的案場是否在使用者的收藏案場名單
-        const favoritedFieldsId = req.user?.FavoritedFields ? req.user.FavoritedFields.map(fr => fr.id) : []
+        const favoritedFieldsId = userAuth?.FavoritedFields ? userAuth.FavoritedFields.map(fr => fr.id) : []
 
         const dataFC = fieldsFC.map(r => ({
           ...r,
