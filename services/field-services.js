@@ -129,15 +129,28 @@ const fieldController = {
       .catch(err => cb(err))
   },
   getFavorites: (req, cb) => {
+    const userAuthId = req.user.id
     const DEFAULT_LIMIT = 12 // 預設每頁顯示幾筆資料
     const categoryId = Number(req.query.categoryId) || ''
     const page = Number(req.query.page) || 1 // 預設第一頁或從query string拿資料
     const limit = Number(req.query.limit) || DEFAULT_LIMIT // 預設每頁顯示資料數或從query string拿資料
     const offset = getOffset(limit, page)
-    return Category.findAll({ raw: true })
-      .then(categories => {
+    return Promise.all([
+      Category.findAll({ raw: true }),
+      User.findByPk(userAuthId, {
+        include: [
+          { // 收藏的案場
+            model: Field,
+            as: 'FavoritedFields',
+            order: [['createdAt', 'DESC']] // 指定按照 createdAt 字段降序排序
+          }]
+      })
+    ])
+      .then(([categories, userAuth]) => {
+        userAuth = userAuth.toJSON()
+
         // 取得使用者收藏案場
-        let fields = req.user.FavoritedFields || []
+        let fields = userAuth.FavoritedFields || []
 
         // 取得並修剪關鍵字
         const keyword = req.query.keyword ? req.query.keyword.trim() : ''

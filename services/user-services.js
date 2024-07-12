@@ -111,18 +111,33 @@ const userController = {
       .catch(err => cb(err))
   },
   getTopUsers: (req, cb) => {
+    const userAuthId = req.user.id
     const limit = 10 // 只取出5名用戶
-    return User.findAll({
-      limit,
-      attributes: { exclude: ['password'] }, // 避免密碼外洩
-      order: [['followerCounts', 'DESC'], ['id', 'ASC']], // 依追蹤數排序
-      include: [{ model: User, as: 'Followers', attributes: { exclude: ['password'] } }] // 取出追蹤此user的人
-    })
-      .then(users => {
+    return Promise.all([
+      User.findAll({
+        limit,
+        attributes: { exclude: ['password'] }, // 避免密碼外洩
+        order: [['followerCounts', 'DESC'], ['id', 'ASC']], // 依追蹤數排序
+        include: [{ model: User, as: 'Followers', attributes: { exclude: ['password'] } }] // 取出追蹤此user的人
+      }),
+      User.findByPk(userAuthId, {
+        include: [
+          // 撈出自己追蹤的人
+          {
+            model: User,
+            as: 'Followings',
+            order: [['createdAt', 'DESC']], // 指定按照 createdAt 字段降序排序
+            attributes: { exclude: ['password'] } // 避免密碼外洩
+          }
+        ]
+      })
+    ])
+      .then(([users, userAuth]) => {
+        userAuth = userAuth.toJSON()
         const result = users
           .map(user => ({ // 傳入的 map 函式記得用小括號包住
             ...user.toJSON(), // 使用展開運算子倒入 map 函式傳入的 user 屬性
-            isFollowed: req.user.Followings.some(f => f.id === user.id)
+            isFollowed: userAuth.Followings.some(f => f.id === user.id)
             // 判斷目前登入的使用者帳戶的追蹤者名單是否包含傳入的使用者
           }))
         return cb(null, { users: result })
@@ -178,15 +193,31 @@ const userController = {
       .catch(err => cb(err))
   },
   getUser: (req, cb) => {
-    return User.findByPk(req.params.id, {
-      attributes: { exclude: ['password'] },
-      include: [
-        { model: Comment, include: [Field] },
-        { model: User, as: 'Followings', attributes: { exclude: ['password'] } }, // 訂閱別人
-        { model: User, as: 'Followers', attributes: { exclude: ['password'] } } // 粉絲
-      ]
-    })
-      .then(user => {
+    const userAuthId = req.user.id
+    return Promise.all([
+      User.findByPk(req.params.id, {
+        attributes: { exclude: ['password'] },
+        include: [
+          { model: Comment, include: [Field] },
+          { model: User, as: 'Followings', attributes: { exclude: ['password'] } }, // 訂閱別人
+          { model: User, as: 'Followers', attributes: { exclude: ['password'] } } // 粉絲
+        ]
+      }),
+      User.findByPk(userAuthId, {
+        include: [
+          // 撈出自己追蹤的人
+          {
+            model: User,
+            as: 'Followings',
+            order: [['createdAt', 'DESC']], // 指定按照 createdAt 字段降序排序
+            attributes: { exclude: ['password'] } // 避免密碼外洩
+          }
+        ]
+      })
+    ])
+
+      .then(([user, userAuth]) => {
+        userAuth = userAuth.toJSON()
         if (!user) throw new Error('使用者不存在!')
 
         // 確認收藏數更新到正確數字
@@ -200,9 +231,7 @@ const userController = {
         user = user.toJSON()
 
         // 判斷頁面的人是否自己追蹤過
-        user.isFollowed = req.user.Followings.some(f => f.id === user.id)
-
-        console.log('測試:', user.isFollowed)
+        user.isFollowed = userAuth.Followings.some(f => f.id === user.id)
 
         // 使用重複值過濾演算法: 過濾掉重複的 comment.Field.id
         user.Comments = filterUnique(user.Comments, ['Field', 'id'])

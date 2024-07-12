@@ -13,7 +13,7 @@ const ExtractJWT = passportJWT.ExtractJwt // api 專用
 const bcrypt = require('bcryptjs')
 
 // 載入 model
-const { User, Field } = require('../models')
+const { User } = require('../models')
 
 // 實作本地登入策略
 // 設置本地的登入策略 Set up passport strategy
@@ -115,31 +115,9 @@ passport.use(new GoogleStrategy({
 passport.serializeUser((user, cb) => cb(null, user.id))
 
 // 在 passport 設定反序列化
-// 共用變數: 帶出登入使用者的關聯資料
-const includeClause = [
-  { // 收藏的案場
-    model: Field,
-    as: 'FavoritedFields',
-    order: [['createdAt', 'DESC']] // 指定按照 createdAt 字段降序排序
-  },
-  { // 撈出追蹤自己的人
-    model: User,
-    as: 'Followers',
-    order: [['createdAt', 'DESC']], // 指定按照 createdAt 字段降序排序
-    attributes: { exclude: ['password'] } // 避免密碼外洩
-  },
-  { // 撈出自己追蹤的人
-    model: User,
-    as: 'Followings',
-    order: [['createdAt', 'DESC']], // 指定按照 createdAt 字段降序排序
-    attributes: { exclude: ['password'] } // 避免密碼外洩
-  }]
-
 passport.deserializeUser((id, cb) => {
   User.findByPk(id, {
-    // 關聯 User Model 的多對多關係 Model, 並寫上多對多關係的名稱(對應model設定的名稱)
-    attributes: { exclude: ['password'] }, // 避免密碼外洩
-    include: includeClause
+    attributes: { exclude: ['password'] } // 避免密碼外洩
   })
     .then(user => cb(null, user.toJSON()))
     .catch(err => cb(err))
@@ -153,12 +131,14 @@ const jwtOptions = {
 
 // 設置 jwt 登入策略
 passport.use(new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
-  User.findByPk(jwtPayload.id, {
-    attributes: { exclude: ['password'] }, // 避免密碼外洩
-    include: includeClause
-  })
-    .then(user => cb(null, user))
-    .catch(err => cb(err))
+  // 在同步語法捕捉可能的錯誤事件
+  try {
+    // cb vs promise, 統一成其中一種風格
+    console.log('登入的user資料', jwtPayload)
+    cb(null, jwtPayload)
+  } catch (err) {
+    cb(err)
+  }
 }))
 
 module.exports = passport
