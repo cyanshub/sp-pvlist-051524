@@ -42,6 +42,49 @@
 + 看到以下訊息，可至瀏覽器輸入下列網址開啟 Pvlist application listening on port: http://localhost:3001
 
 
+## Web APIs 路由設計
+本專案同時以 Web APIs 提供服務, 依循 RESTful API 理念設計路由。 將 email、password 發送到本站的 signin 路由, 即可得到 Auth Type 為 Bearer Token 的憑證, 夾帶憑證即可使用本站 Web APIs, 路由對應功能簡述如下
+
+### 與 User 有關的路由
++ POST /api/signup 註冊
++ POST /api/signin 登入
++ POST /api/favorite/:fieldId 收藏指定案場
++ DEL /api/favorite/:fieldId 移除收藏指定案場
++ GET /api/users/top 瀏覽複數使用者之追蹤數較高者頁面
++ POST /api/following/:userId 追蹤指定使用者
++ DEL /api/following/:userId 移除追蹤指定使用者
++ GET /api/users/:id 瀏覽指定使用者頁面
++ GET /api/users/:id/edit 瀏覽指定使用者編輯頁面
++ PUT /api/users/:id 編輯指定使用者
++ PUT /api/avatars/:userId 移除指定使用者頭像
+
+### 與 Field 有關的路由
++ GET /api/fields 瀏覽複數案場頁面
++ GET /api/fields/feeds 瀏覽複數案場之最新動態頁面(最新案場、最新評論各10筆)
++ GET /api/fields/favorites 瀏覽複數案場之使用者收藏頁面
++ GET /api/fields/top 瀏覽複數案場之人氣前10名頁面(分別依收藏數、評論數各10筆)
++ GET /api/fields/trecs 瀏覽複數案場之憑證前10名頁面(分別依累積量、交易量、庫存量各10筆)
++ GET /api/fields/:id 瀏覽指定案場頁面
++ GET /api/fields/:id/dashboard 瀏覽指定案場之儀表板頁面
+
+
+### 與 Comment 有關的路由
++ POST /api/comments 新增評論
++ DEL  /api/comments/:id 移除指定評論
+
+### 與 Admin 有關的路由
++ GET /api/admin/fields 在後台瀏覽複數案場頁面
++ POST /api/admin/fields 在後台新增案場
++ GET /api/admin/fields/:id 在後台瀏覽指定案場頁面
++ PUT /api/admin/fields/:id 在後台編輯指定案場
++ DEL /api/admin/fields/:id 在後台移除指定案場
++ GET /api/admin/users 在後台瀏覽複數使用者頁面
++ PATCH /api/admin/users 在後台修改使定使用者
++ GET /api/admin/categories 在後台瀏覽複數類別頁面
++ POST /api/admin/categories 在後台新增類別
++ PUT /api/admin/categories/:id 在後台編輯指定類別
++ DEL /api/admin/categories/:id 在後台移除指定類別
+
 
 ## 主要技術
 - [Nodemailer](https://nodemailer.com/)
@@ -76,4 +119,3 @@
 + passport-local: 1.0.0
 + sequelize: 6.6.5
 + sequelize-cli: 6.2.0
-
