@@ -134,7 +134,7 @@ passport.use(new JWTStrategy(jwtOptions, (jwtPayload, cb) => {
   // 在同步語法捕捉可能的錯誤事件
   try {
     // cb vs promise, 統一成其中一種風格
-    console.log('登入的user資料', jwtPayload)
+    console.log('登入的user資料:', jwtPayload)
     cb(null, jwtPayload)
   } catch (err) {
     cb(err)
