@@ -28,6 +28,7 @@ router.get('/users/top', authenticated, userController.getTopUsers)
 router.post('/following/:userId', authenticated, userController.addFollowing)
 router.delete('/following/:userId', authenticated, userController.removeFollowing)
 router.get('/users/:id', authenticated, userController.getUser)
+router.get('/users/:id/edit', authenticated, userController.editUser)
 router.put('/users/:id', authenticated, upload.single('avatar'), userController.putUser)
 router.put('/avatars/:userId', authenticated, userController.putAvatar)
 
