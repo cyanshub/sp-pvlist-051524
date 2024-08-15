@@ -68,7 +68,7 @@ const fieldController = {
       .catch(err => cb(err))
   },
   getField: (req, cb) => {
-    return Field.findByPk(req.params.id, {
+    return Field.findByPk(Number(req.params.id), {
       include: [
         Category,
         { model: Comment, include: [{ model: User, attributes: { exclude: ['password'] } }] }, // 關聯 Comment model
@@ -77,7 +77,7 @@ const fieldController = {
       order: [[Comment, 'createdAt', 'DESC']]
     })
       .then(field => {
-        if (!field) throw new Error('該案場不存在!')
+        if (!field) throw Object.assign(new Error('該案場不存在!'), { status: 404 })
         field = field.toJSON()
         const isFavorited = field.FavoritedUsers.some(f => f.id === req.user.id)
         return cb(null, { field, isFavorited })
@@ -85,7 +85,7 @@ const fieldController = {
       .catch(err => cb(err))
   },
   getDashboard: (req, cb) => {
-    return Field.findByPk(req.params.id, {
+    return Field.findByPk(Number(req.params.id), {
       include: [
         Category,
         { model: User, as: 'FavoritedUsers', attributes: { exclude: ['password'] } }, // 關聯 User model
@@ -93,7 +93,7 @@ const fieldController = {
       ]
     })
       .then(field => {
-        if (!field) throw new Error('該案場不存在!')
+        if (!field) throw Object.assign(new Error('該案場不存在!'), { status: 404 })
         const isFavorited = field.FavoritedUsers.some(f => f.id === req.user.id)
 
         // 每次查詢時, 使資料的 viewCounts + 1
@@ -129,8 +129,8 @@ const fieldController = {
       })
     ])
       .then(([fields, comments]) => {
-        if (!fields) throw new Error('該案場不存在!')
-        if (!comments) throw new Error('該評論不存在!')
+        if (!fields) throw Object.assign(new Error('案場不存在!'), { status: 404 })
+        if (!comments) throw Object.assign(new Error('評論不存在!', { status: 404 }))
         return cb(null, { fields, comments })
       })
       .catch(err => cb(err))
@@ -187,33 +187,25 @@ const fieldController = {
       .catch(err => cb(err))
   },
   getTrecs: (req, cb) => {
-    return Promise.all([
-      Field.findAll({
+    const orderClauses = [
+      [['totalAmount', 'DESC'], ['id', 'ASC']],
+      [['transAmount', 'DESC'], ['id', 'ASC']],
+      [['remainAmount', 'DESC'], ['id', 'ASC']]]
+
+    const FieldFindAllPromises = orderClauses.map(orderClause => {
+      return Field.findAll({
         limit: 10, // 只取前10筆資料
-        order: [['totalAmount', 'DESC'], ['id', 'ASC']],
         include: [Category],
         raw: true,
-        nest: true
-      }),
-      Field.findAll({
-        limit: 10, // 只取前10筆資料
-        order: [['transAmount', 'DESC'], ['id', 'ASC']],
-        include: [Category],
-        raw: true,
-        nest: true
-      }),
-      Field.findAll({
-        limit: 10, // 只取前10筆資料
-        order: [['remainAmount', 'DESC'], ['id', 'ASC']],
-        include: [Category],
-        raw: true,
-        nest: true
+        nest: true,
+        order: orderClause
       })
-    ])
+    })
+    return Promise.all(FieldFindAllPromises)
       .then(([fieldsTotal, fieldsTrans, fieldsRemain]) => {
-        if (!fieldsTotal) throw new Error('案場不存在!')
-        if (!fieldsTrans) throw new Error('案場不存在!')
-        if (!fieldsRemain) throw new Error('案場不存在!')
+        if (!fieldsTotal || !fieldsTrans || !fieldsRemain) {
+          throw Object.assign(new Error('案場不存在!'), { status: 404 })
+        }
         return cb(null, { fieldsTotal, fieldsTrans, fieldsRemain })
       })
       .catch(err => cb(err))
@@ -222,24 +214,27 @@ const fieldController = {
     // 關聯出使用者收藏的案場
     const userAuthId = req.user.id
     const includeClause = [{ model: Field, as: 'FavoritedFields' }]
-    return Promise.all([
-      Field.findAll({
-        order: [['favoriteCounts', 'DESC'], ['id', 'DESC']],
+    const orderClauses = [
+      [['favoriteCounts', 'DESC'], ['id', 'DESC']],
+      [['commentCounts', 'DESC'], ['id', 'DESC']]]
+
+    const FieldFindAllPromises = orderClauses.map(orderClause => {
+      return Field.findAll({
+        order: orderClause,
         limit: 10,
         raw: true
-      }),
-      Field.findAll({
-        order: [['commentCounts', 'DESC'], ['id', 'DESC']],
-        limit: 10,
-        raw: true
-      }),
-      User.findByPk(userAuthId, {
-        include: includeClause
       })
-    ])
+    })
+
+    const userAuthPromise = User.findByPk(userAuthId, {
+      include: includeClause
+    })
+
+    return Promise.all([...FieldFindAllPromises, userAuthPromise])
       .then(([fieldsFC, fieldsCC, userAuth]) => {
-        if (!fieldsFC) throw new Error('案場不存在!')
-        if (!fieldsCC) throw new Error('案場不存在!')
+        if (!fieldsFC || !fieldsCC) {
+          throw Object.assign(new Error('案場不存在!'), { status: 404 })
+        }
 
         // 判別查詢的案場是否在使用者的收藏案場名單
         const favoritedFieldsId = userAuth?.FavoritedFields ? userAuth.FavoritedFields.map(fr => fr.id) : []

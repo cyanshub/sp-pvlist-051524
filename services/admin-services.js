@@ -67,11 +67,13 @@ const adminServices = {
     const file = req.file // 根據之前修正的form content, 把檔案從req取出來
 
     // 檢驗必填欄位是否存在
-    if (!name) throw new Error('案場名稱為必填欄位!')
+    if (!name) throw Object.assign(new Error('案場名稱為必填欄位!'), { status: 422 })
 
     // 檢查鄉鎮市區格式
     const localFormat = fullAddress.trim().slice(0, 5) === '新竹市東區' ? fullAddress.trim().slice(4, 5) : fullAddress.trim().slice(5, 6)
-    if (!['鄉', '鎮', '市', '區'].includes(localFormat)) throw new Error('地址開頭請提供縣市及鄉鎮市區!')
+    if (!['鄉', '鎮', '市', '區'].includes(localFormat)) {
+      throw Object.assign(new Error('地址開頭請提供縣市及鄉鎮市區!'), { status: 422 })
+    }
 
     // 把取出的檔案 file 傳給 file-helper 處理
     return localFileHandler(file)
@@ -91,39 +93,39 @@ const adminServices = {
       .catch(err => cb(err))
   },
   getField: (req, cb) => {
-    return Field.findByPk(req.params.id, {
+    return Field.findByPk(Number(req.params.id), {
       raw: true,
       include: ['Category'],
       nest: true
     })
       .then(field => {
-        if (!field) throw new Error('該案場不存在!')
+        if (!field) throw Object.assign(new Error('該案場不存在!'), { status: 404 })
         return cb(null, { field })
       })
   },
   editField: (req, cb) => {
     Promise.all([
-      Field.findByPk(req.params.id, { raw: true }),
+      Field.findByPk(Number(req.params.id), { raw: true }),
       Category.findAll({ raw: true })
     ])
       .then(([field, categories]) => {
-        if (!field) throw new Error('該案場不存在!')
+        if (!field) throw Object.assign(new Error('該案場不存在!'), { status: 404 })
         return cb(null, { field, categories })
       })
       .catch(err => { cb(err) })
   },
   putField: (req, cb) => {
     const { name, categoryId, fullAddress, totalAmount, transAmount } = req.body
-    if (!name) throw new Error('案場名稱為必填欄位!') // 檢驗必填欄位是否存在
+    if (!name) throw Object.assign(new Error('案場名稱為必填欄位!'), { status: 422 })// 檢驗必填欄位是否存在
     const file = req.file // 拿到 middleware: multer 上傳的圖片
     // 使用 Promise.all 語法, 待所有非同步事件處理完才跳入下一個.then()
     // Promise.all([非同步A, 非同步B]).then(([A結果, B結果]) => {...})
     return Promise.all([
-      Field.findByPk(req.params.id),
+      Field.findByPk(Number(req.params.id)),
       localFileHandler(file)
     ])
       .then(([field, filePath]) => {
-        if (!field) throw new Error('該案場不存在!')
+        if (!field) throw Object.assign(new Error('該案場不存在!'), { status: 404 })
         return field.update({
           name,
           totalAmount: totalAmount || 0,
@@ -139,9 +141,9 @@ const adminServices = {
       .catch(err => cb(err))
   },
   deleteField: (req, cb) => {
-    return Field.findByPk(req.params.id)
+    return Field.findByPk(Number(req.params.id))
       .then(field => {
-        if (!field) throw new Error('該案場不存在!')
+        if (!field) throw Object.assign(new Error('該案場不存在!'), { status: 404 })
         return field.destroy()
       })
       .then(deleteField => cb(null, { filed: deleteField }))
@@ -188,17 +190,15 @@ const adminServices = {
       .catch(err => cb(err))
   },
   patchUser: (req, cb) => {
-    return User.findByPk(req.params.id, {
+    return User.findByPk(Number(req.params.id), {
       // 避免密碼資料外洩
       attributes: { exclude: ['password'] }
     })
       .then(user => {
         // 檢查使用者是否存在
-        if (!user) throw new Error("User didn't exist!")
+        if (!user) throw Object.assign(new Error('使用者不存在!'), { status: 404 })
         if (user.email === 'root@example.com') {
-          const err = new Error('error_messages', '禁止變更 root 使用者權限!')
-          err.status = 404
-          throw err
+          throw Object.assign(new Error('禁止變更 root 使用者權限!'), { status: 403 })
         }
         return user.update({
           isAdmin: !user.isAdmin
@@ -212,7 +212,7 @@ const adminServices = {
   getCategories: (req, cb) => {
     return Promise.all([
       Category.findAll({ raw: true }),
-      req.params.id ? Category.findByPk(req.params.id, { raw: true }) : null
+      req.params.id ? Category.findByPk(Number(req.params.id), { raw: true }) : null
     ])
       .then(([categories, category]) => cb(null, { categories, category }))
       .catch(err => cb(err))
@@ -220,8 +220,10 @@ const adminServices = {
   postCategory: (req, cb) => {
     const { name } = req.body
     // 檢查類別名稱
-    if (!name) throw new Error('請輸入類別名稱!')
-    if (name.trim().length === 0) throw new Error('請勿輸入空白字串')
+    if (!name) throw Object.assign(new Error('請輸入類別名稱!'), { status: 422 })
+    if (name.trim().length === 0) {
+      throw Object.assign(new Error('請勿輸入空白字串'), { status: 422 })
+    }
     return Category.create({ name: name.trim() }) // 防止開頭輸入空白字串
       .then(newCategory => cb(null, { category: newCategory }))
       .catch(err => cb(err))
@@ -229,20 +231,20 @@ const adminServices = {
   putCategory: (req, cb) => {
     const { name } = req.body
     // 檢查類別名稱
-    if (!name) throw new Error('請輸入類別名稱!')
-    if (name.trim().length === 0) throw new Error('請勿輸入空白字串')
-    return Category.findByPk(req.params.id)
+    if (!name) throw Object.assign(new Error('請輸入類別名稱!'), { status: 422 })
+    if (name.trim().length === 0) throw Object.assign(new Error('請勿輸入空白字串'), { status: 422 })
+    return Category.findByPk(Number(req.params.id))
       .then(category => {
-        if (!name) throw new Error('該類別不存在!')
+        if (!category) throw Object.assign(new Error('該類別不存在!'), { status: 404 })
         return category.update({ name: name.trim() }) // 防止開頭更新時輸入空白字串
       })
       .then(editedCategory => cb(null, { category: editedCategory }))
       .catch(err => cb(err))
   },
   deleteCategory: (req, cb) => {
-    return Category.findByPk(req.params.id)
+    return Category.findByPk(Number(req.params.id))
       .then(category => {
-        if (!category) throw new Error('該類別不存在!')
+        if (!category) throw Object.assign(new Error('該類別不存在!'), { status: 404 })
         return category.destroy()
       })
       .then(deletedCategory => cb(null, { category: deletedCategory }))

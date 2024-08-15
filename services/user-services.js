@@ -15,10 +15,10 @@ const userController = {
   signUp: (req, cb) => {
     const { name, email, password, passwordCheck } = req.body
     const Salt = 10
-    if (password !== passwordCheck) throw new Error('請再次確認密碼是否輸入正確')
+    if (password !== passwordCheck) throw Object.assign(new Error('請再次確認密碼是否輸入正確'), { status: 422 })
     return User.findOne({ where: { email } })
       .then(user => {
-        if (user) throw new Error('使用者信箱已經存在')
+        if (user) throw Object.assign(new Error('使用者信箱已經存在'), { status: 409 })
         return bcrypt.hash(password, Salt)
       })
       .then(hash => {
@@ -55,7 +55,7 @@ const userController = {
   },
   addFavorite: (req, cb) => {
     const userId = req.user.id
-    const fieldId = req.params.fieldId
+    const fieldId = Number(req.params.fieldId)
     return Promise.all([
       Field.findByPk(fieldId, {
         // 取出關聯 model, 更新收藏數
@@ -69,8 +69,11 @@ const userController = {
       })
     ])
       .then(([field, favorite]) => {
-        if (!field) throw new Error('該案場不存在!')
-        if (favorite) throw new Error('已收藏過此案場!') // 檢查若能在join table 找到對應關係代表已經收藏過
+        if (!field) throw Object.assign(new Error('該案場不存在!'), { status: 404 })
+
+        // 檢查若能在join table 找到對應關係代表已經收藏過
+        if (favorite) throw Object.assign(new Error('已收藏過此案場!'), { status: 409 })
+
         field.update({
           // 新增收藏時, 追蹤數 + 1
           favoriteCounts: field.FavoritedUsers.length + 1
@@ -85,7 +88,7 @@ const userController = {
   },
   removeFavorite: (req, cb) => {
     const userId = req.user.id
-    const fieldId = req.params.fieldId
+    const fieldId = Number(req.params.fieldId)
     return Promise.all([
       Field.findByPk(fieldId, {
         // 取出關聯 model, 更新收藏數
@@ -99,8 +102,8 @@ const userController = {
       })
     ])
       .then(([field, favorite]) => {
-        if (!field) throw new Error('該案場不存在!')
-        if (!favorite) throw new Error('並未收藏此案場!')
+        if (!field) throw Object.assign(new Error('該案場不存在!'), { status: 404 })
+        if (!favorite) throw Object.assign(new Error('並未收藏此案場!'), { status: 409 })
         field.update({
           // 移除收藏時, 追蹤數 - 1
           favoriteCounts: field.FavoritedUsers.length < 1 ? 0 : field.FavoritedUsers.length - 1 // 防護機制
@@ -145,7 +148,7 @@ const userController = {
       .catch(err => cb(err))
   },
   addFollowing: (req, cb) => {
-    const followingId = req.params.userId
+    const followingId = Number(req.params.userId)
     const followerId = req.user.id
     return Promise.all([
       User.findByPk(followingId),
@@ -157,8 +160,8 @@ const userController = {
       })
     ])
       .then(([user, followship]) => {
-        if (!user) throw new Error('要追蹤的使用者不存在!')
-        if (followship) throw new Error('已追蹤過該名使用者!')
+        if (!user) throw Object.assign(new Error('要追蹤的使用者不存在!'), { status: 404 })
+        if (followship) throw Object.assign(new Error('已追蹤過該名使用者!'), { status: 409 })
         user.update({
           // 新增收藏時, 追蹤數 + 1
           followerCounts: user.followerCounts + 1
@@ -169,7 +172,7 @@ const userController = {
       .catch(err => cb(err))
   },
   removeFollowing: (req, cb) => {
-    const followingId = req.params.userId
+    const followingId = Number(req.params.userId)
     const followerId = req.user.id
     return Promise.all([
       User.findByPk(followingId),
@@ -181,8 +184,8 @@ const userController = {
       })
     ])
       .then(([user, followship]) => {
-        if (!user) throw new Error('要追蹤的使用者不存在!')
-        if (!followship) throw new Error('尚未追蹤過該名使用者!')
+        if (!user) throw Object.assign(new Error('要取消追蹤的使用者不存在!'), { status: 404 })
+        if (!followship) throw Object.assign(new Error('尚未追蹤過該名使用者!'), { status: 409 })
         user.update({
           // 新增收藏時, 追蹤數 + 1
           followerCounts: user.followerCounts < 1 ? user.followerCounts = 0 : user.followerCounts - 1
@@ -195,7 +198,7 @@ const userController = {
   getUser: (req, cb) => {
     const userAuthId = req.user.id
     return Promise.all([
-      User.findByPk(req.params.id, {
+      User.findByPk(Number(req.params.id), {
         attributes: { exclude: ['password'] },
         include: [
           { model: Comment, include: [Field] },
@@ -218,7 +221,7 @@ const userController = {
 
       .then(([user, userAuth]) => {
         userAuth = userAuth.toJSON()
-        if (!user) throw new Error('使用者不存在!')
+        if (!user) throw Object.assign(new Error('使用者不存在!'), { status: 404 })
 
         // 確認收藏數更新到正確數字
         user.update({
@@ -241,31 +244,33 @@ const userController = {
       .catch(err => cb(err))
   },
   editUser: (req, cb) => {
-    return User.findByPk(req.params.id, {
+    return User.findByPk(Number(req.params.id), {
       attributes: { exclude: ['password'] },
       raw: true
     })
       .then(user => {
-        if (!user) throw new Error('使用者不存在!')
+        if (!user) throw Object.assign(new Error('使用者不存在!'), { status: 404 })
         return cb(null, { user })
       })
       .catch(err => cb(err))
   },
   putUser: (req, cb) => {
     // 使用者只能編輯自己的資料: 比對傳入的id 與 passport的id
-    if (Number(req.params.id) !== req.user.id) throw new Error('只能編輯自己的使用者資料!')
+    if (Number(req.params.id) !== req.user.id) {
+      throw Object.assign(new Error('只能編輯自己的使用者資料!'), { status: 403 })
+    }
     const { name } = req.body
-    if (!name.trim()) throw new Error('需要輸入使用者名稱!')
+    if (!name.trim()) throw Object.assign(new Error('需要輸入使用者名稱!'), { status: 422 })
     const file = req.file // 根據之前修正的form content, 把檔案從req取出來
     return Promise.all([
-      User.findByPk(req.params.id, {
+      User.findByPk(Number(req.params.id), {
         attributes: { exclude: ['password'] }
       }),
       localAvatarHandler(file) // 將圖案寫入指定資料夾, 並回傳圖檔路徑
     ])
       .then(([user, filePath]) => {
         // 檢查使用者是否存在
-        if (!user) throw new Error('使用者不存在!')
+        if (!user) throw Object.assign(new Error('使用者不存在!'), { status: 404 })
         return user.update({
           name,
           avatar: filePath || user.avatar
@@ -275,12 +280,12 @@ const userController = {
       .catch(err => cb(err))
   },
   putAvatar: (req, cb) => {
-    const userId = req.params.userId
+    const userId = Number(req.params.userId)
     return User.findByPk(userId, {
       attributes: { exclude: ['password'] }
     })
       .then(user => {
-        if (!user) throw new Error('使用者不存在!')
+        if (!user) throw Object.assign(new Error('使用者不存在!'), { status: 404 })
         return user.update({
           avatar: null
         })

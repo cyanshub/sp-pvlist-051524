@@ -6,17 +6,17 @@ const commentServices = {
     const { text, fieldId } = req.body
     const userId = req.user.id
     // 檢查評論是否存在
-    if (!text) throw new Error('請輸入訊息!')
-    if (text.trim().length === 0) throw new Error('請勿輸入空白字串!')
+    if (!text) throw Object.assign(new Error('請輸入訊息!'), { status: 422 })
+    if (text.trim().length === 0) throw Object.assign(new Error('請勿輸入空白字串!'), { status: 422 })
     return Promise.all([
       User.findByPk(userId),
       Field.findByPk(fieldId, {
         include: [Comment]
       })
     ])
-      .then(([user, field]) => {
-        if (!user) throw new Error('下評論的使用者不存在!')
-        if (!field) throw new Error('被評論的案場不存在!')
+      .then(([userAuth, field]) => {
+        if (!userAuth) throw Object.assign(new Error('下評論的使用者不存在!'), { status: 404 })
+        if (!field) throw Object.assign(new Error('被評論的案場不存在!'), { status: 404 })
         field.update({
           commentCounts: field.Comments.length + 1
         })
@@ -31,7 +31,7 @@ const commentServices = {
   },
   deleteComment: (req, cb) => {
     const { fieldId } = req.body
-    const commentId = req.params.id
+    const commentId = Number(req.params.id)
     const userId = req.user.id
     return Promise.all([
       // 拿出關聯 model, 避免使用者密碼外洩
@@ -46,14 +46,12 @@ const commentServices = {
       })
     ])
       .then(([comment, userAuth, field]) => {
-        if (!comment) throw new Error('該則訊息不存在!')
-        if (!field) throw new Error('被評論的案場不存在!')
+        if (!comment) throw Object.assign(new Error('該則訊息不存在!'), { status: 404 })
+        if (!field) throw Object.assign(new Error('被評論的案場不存在!'), { status: 404 })
 
         // 如果被刪的訊息不是自己的則擋掉, 管理員例外
         if (userAuth.isAdmin !== true && userAuth.email !== comment.User.email) {
-          const err = new Error('禁止刪除root使用者的評論!')
-          err.status = 404
-          throw err
+          Object.assign(new Error('禁止刪除其他人的評論'), { status: 403 })
         }
         field.update({
           commentCounts: field.Comments.length < 1 ? 0 : field.Comments.length - 1
