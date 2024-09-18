@@ -3,6 +3,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config()
 }
 
+// 載入所需工具
 const express = require('express')
 const handlebars = require('express-handlebars')
 const path = require('path')
@@ -15,6 +16,7 @@ const { getUser } = require('./helpers/auth-helpers.js')
 
 const { pages, apis } = require('./routes')
 const handlebarsHelpers = require('./helpers/handlebars-helpers.js')
+const scheduleKeepAliveReq = require('./helpers/req-helpers.js')
 
 const app = express()
 const port = process.env.PORT || 3001
@@ -50,6 +52,9 @@ app.use((req, res, next) => {
 // middleware: 路由匯整器
 app.use('/api', apis)
 app.use(pages)
+
+// 掛載執行處理程序
+scheduleKeepAliveReq() // 定時發送請求以維持入站流量
 
 app.listen(port, () => {
   console.info(`Pvlist application listening on port: http://localhost:${port}`)
